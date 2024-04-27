@@ -14,6 +14,7 @@ export default function Home() {
       <Button className="bg-white hover:bg-gray-200 text-blue-500 font-bold py-2 px-4 rounded">
         Get Started
       </Button>
+      <footer className="absolute bottom-0 mb-4 text-white"> © 2024 Notekan </footer>
     </main>
   );
 }

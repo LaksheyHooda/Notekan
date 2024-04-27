@@ -1,6 +1,7 @@
 // Import the express library
 const express = require('express');
 const { WebSocketServer } = require('ws')
+const fs = require('fs');
 
 // Create an express application
 const app = express();
@@ -21,13 +22,19 @@ wss.on('connection', function connection(ws) {
     console.log('Connected to client via WebSocket');
 
     // Use websocket-stream to handle stream easily
-    const stream = wsStream(ws);
+    const fileStream = fs.createWriteStream('output_audio.webm');
 
     // Here you could save the stream to a file, for example:
-    stream.pipe(fs.createWriteStream('output_audio.webm'));
+    //stream.pipe(fs.createWriteStream('output_audio.webm'));
+
+    ws.on('message', function incoming(message) {
+        console.log('Received message');
+        fileStream.write(message);
+    });
 
     ws.on('close', () => {
         console.log('Connection closed');
+        fileStream.end();
     });
 });
 

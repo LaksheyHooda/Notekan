@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { db, auth } from "@/config/firebase/config";
 import { addDoc, collection } from "firebase/firestore";
@@ -7,45 +7,50 @@ import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Modal from "@/components/failedloginmodal";
-import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
-import { useRouter } from 'next/navigation'
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 import { Link } from "@nextui-org/react";
 
 export default function Home() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter()
+  const router = useRouter();
 
-  useEffect(() => {
-
-  }, []);
+  useEffect(() => {}, []);
 
   const handleSignup = async () => {
-      try {
-          await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-              //revalidatePath('/dashboard') // Update cached posts
-              router.replace(`/dashboard`)
-          })
-      } catch (error) {
-          setError(error.message);
-          setIsModalOpen(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password).then(
+        (userCredential) => {
+          router.replace(`/dashboard`);
+        }
+      );
+    } catch (error) {
+      if (error.message === "Firebase: Error (auth/invalid-email).") {
+        setError("Invalid email.");
+      } else if (error.message === "Firebase: Error (auth/wrong-password).") {
+        setError("Invalid password.");
+      } else {
+        setError("An error occurred. Please try again.");
       }
-  }
+      setIsModalOpen(true);
+    }
+  };
 
   const handleSubmit = (event) => {
-      event.preventDefault();
-      handleSignup();
-  }
+    event.preventDefault();
+    handleSignup();
+  };
 
   const handleKeyDown = (event) => {
-      if (event.key === "Enter") {
-          handleSubmit(event);
-      }
-  }
-  
+    if (event.key === "Enter") {
+      handleSubmit(event);
+    }
+  };
+
   return (
     <main className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">

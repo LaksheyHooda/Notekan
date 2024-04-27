@@ -4,6 +4,10 @@ import React from 'react';
 const Modal = ({ isOpen, onClose, message }) => {
     if (!isOpen) return null;
 
+    setTimeout(() => {
+        onClose();
+    }, 5000);
+
     return (
         <div className="fixed top-0 left-0 w-full flex justify-center items-start">
             <div className="w-full bg-red-100 border-b border-red-400 text-red-700 px-4 py-4 rounded-b-lg text-center" role="alert">

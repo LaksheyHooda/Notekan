@@ -65,7 +65,7 @@ export default function Signup() {
                     value={password}
                     onValueChange={setPassword}
                 />
-                <Button className="mt-4">
+                <Button className="mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 shadow-gray-500/50 font-bold">
                     Login
                 </Button>
             </form>

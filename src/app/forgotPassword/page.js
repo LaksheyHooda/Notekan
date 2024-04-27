@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { Link } from "@nextui-org/react";
 
 export default function ForgotPassword() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,10 +19,10 @@ export default function ForgotPassword() {
   useEffect(() => {}, []);
 
   const handleEmail = async () => {
-    try{
-        await sendPasswordResetEmail(auth, email).then(() => {
-            router.replace(`/login`);
-        })
+    try {
+      await sendPasswordResetEmail(auth, email).then(() => {
+        router.replace(`/login`);
+      });
     } catch (error) {
       setError(error.message);
       setIsModalOpen(true);
@@ -64,6 +65,13 @@ export default function ForgotPassword() {
             Send Reset Link
           </Button>
         </form>
+
+        <Button
+          onClick={() => router.replace(`/login`)}
+          className="py-2 px-4 w-full bg-white hover:bg-gray-200 text-blue-500 hover:text-blue-700 shadow-gray-500/50 font-bold mt-4"
+        >
+          Back to Login
+        </Button>
       </div>
     </div>
   );

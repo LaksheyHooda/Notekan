@@ -75,7 +75,7 @@ export default function Signup() {
             />
             <Button
               onClick={handleSubmit}
-              className="py-2 px-4 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 shadow-gray-500/50 font-bold"
+              className="py-2 px-4 mt-4 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 shadow-gray-500/50 font-bold"
             >
               Sign Up
             </Button>

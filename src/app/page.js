@@ -72,12 +72,20 @@ export default function Home() {
           />
           <div className="flex justify-between items-center mb-4">
             <div>
-              <input type="checkbox" id="remember" name="remember" className="mr-2" />
+              <input
+                type="checkbox"
+                id="remember"
+                name="remember"
+                className="mr-2"
+              />
               <label htmlFor="remember" className="font-medium text-slate-900">
                 Remember me
               </label>
             </div>
-            <Link href="/forgotPassword" className="text-blue-500 hover:text-blue-700 font-medium">
+            <Link
+              href="/forgotPassword"
+              className="text-blue-500 hover:text-blue-700 font-medium"
+            >
               Forgot password?
             </Link>
           </div>
@@ -94,7 +102,10 @@ export default function Home() {
 
         <div className="mt-4 text-center">
           <span className="mr-2 text-slate-900">Don't have an account?</span>
-          <Link href="/signup" className="text-blue-500 hover:text-blue-700 font-medium">
+          <Link
+            href="/signup"
+            className="text-blue-500 hover:text-blue-700 font-medium"
+          >
             Sign up
           </Link>
         </div>

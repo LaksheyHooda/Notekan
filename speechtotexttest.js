@@ -13,4 +13,19 @@ async function main() {
 
   console.log(transcription.text);
 }
-main();
+//main();
+
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath('/opt/homebrew/bin/ffmpeg');  // Set this to the correct path
+
+ffmpeg('output_audio.webm')
+  .fromFormat('webm')
+  .toFormat('mp3')
+  .audioCodec('libmp3lame')
+  .on('error', function (err) {
+    console.log('An error occurred: ' + err.message);
+  })
+  .on('end', function () {
+    console.log('Conversion finished successfully.');
+  })
+  .save('output.mp3');

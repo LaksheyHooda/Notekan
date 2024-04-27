@@ -30,16 +30,16 @@ export default function Home() {
   })
 
   return (
-    <div className="bg-fixed h-screen inset-0 overflow-auto h-screen bg-gradient-to-r from-blue-500 to-purple-500">
+    <div className="bg-fixed h-screen inset-0 overflow-auto h-screen bg-gradient-to-r from-[#481d80] to-[#000000]">
       <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-6xl md:text-8xl font-bold text-white mb-4 animate-[pulse_4s_cubic-bezier(0.4,_0,_0.6,_1)_infinite]">
-          Welcome to NoteKan!
+        <h1 className="text-6xl md:text-8xl font-bold text-[#e7c9dc] mb-4 animate-[pulse_4s_cubic-bezier(0.4,_0,_0.6,_1)_infinite]">
+          Welcome to NoteKan
         </h1>
-        <p className="text-lg md:text-xl text-white mb-8">
-          We hate Confluence too.
+        <p className="text-lg md:text-xl font-bold text-white mb-8">
+         One-Click AI Summaries: Transform Talks into Text Instantly!
         </p>
         <Link href="/login">
-          <Button className="bg-white hover:bg-gray-200 text-blue-500 font-bold py-2 px-4 rounded">
+          <Button className="bg-[#e7c9dc] hover:bg-white-200 text-black font-bold py-2 px-4 rounded">
             Get Started
           </Button>
         </Link>

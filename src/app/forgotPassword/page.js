@@ -29,7 +29,7 @@ export default function Signup() {
     }, []);
 
     return (
-        <div className="flex justify-center inset-0 fixed items-center h-screen bg-gradient-to-r from-blue-500 to-purple-500">
+        <div className="flex justify-center inset-0 fixed items-center h-screen bg-gradient-to-r from-[#000000] to-[#243c5a]">
             Forgot Pasword!
         </div>
     );

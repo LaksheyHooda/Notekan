@@ -7,10 +7,18 @@ export default function Home() {
       <div className="flex-col inline-block">
         <p className="mb-4">Welcome to Notekan</p>
         <div>
-          <Link href="/signup" className="mb-4">Sign up</Link>
+          <Link href="/signup" className="mb-4">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Sign Up
+            </button>
+          </Link>
         </div>
         <div>
-          <Link href="/login" className="mb-4">Login</Link>
+          <Link href="/login" className="mb-4">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Login
+            </button>
+          </Link>
         </div>
       </div>
     </main>

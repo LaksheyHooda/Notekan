@@ -35,25 +35,37 @@ export default function Signup() {
         }
     }
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        handleSignup();
+    }
+
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleSubmit(event);
+        }
+    }
 
     return (
         <div className="flex min-h-screen flex-col items-center p-24">
             Login!
-            <form>
+            <form onSubmit={handleSubmit}>
                 <Input
-                    className="mt-4"
+                    className="mt-4 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-text caret-blue-500 animate-blink-wide"
                     placeholder="Email"
+                    onKeyDown={handleKeyDown}
                     value={email}
                     onValueChange={setEmail}
                 />
                 <Input
-                    className="mt-4"
+                    className="mt-4 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-text caret-blue-500 animate-blink-wide"  
                     placeholder="Password"
                     type="password"
+                    onKeyDown={handleKeyDown}
                     value={password}
                     onValueChange={setPassword}
                 />
-                <Button className="mt-4" onClick={handleSignup}>
+                <Button className="mt-4">
                     Login
                 </Button>
             </form>

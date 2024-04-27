@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@nextui-org/react";
 
-export default function Signup() {
+export default function Dashboard() {
 
     const [isRecording, setIsRecording] = useState(false);
     const mediaRecorderRef = useRef(null);

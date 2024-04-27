@@ -1,18 +1,15 @@
 "use client";
 
 import { db, auth } from "@/config/firebase/config";
-import { addDoc, collection } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import Modal from "@/components/failedloginmodal";
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 import { Link } from "@nextui-org/react";
 
-export default function Home() {
+export default function Login() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -24,12 +21,22 @@ export default function Home() {
   const handleSignup = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-        //revalidatePath('/dashboard') // Update cached posts
         router.replace(`/dashboard`)
       })
     } catch (error) {
-      setError(error.message);
-      setIsModalOpen(true);
+      if (error.code === "auth/invalid-email") {
+        setError("Invalid email address.");
+        setIsModalOpen(true);
+      } else if (error.code === "auth/user-not-found") {
+        setError("User not found.");
+        setIsModalOpen(true);
+      } else if (error.code === "auth/wrong-password") {
+        setError("Incorrect password.");
+        setIsModalOpen(true);
+      } else {
+        setError(error.message);
+        setIsModalOpen(true);
+      }
     }
   }
 

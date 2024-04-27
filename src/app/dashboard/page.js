@@ -2,32 +2,34 @@
 
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@nextui-org/react";
+import { useRecordVoice } from "@/hooks/useRecordVoice";
 
 export default function Dashboard() {
 
     const [isRecording, setIsRecording] = useState(false);
     const mediaRecorderRef = useRef(null);
     const webSocketRef = useRef(null);
+    const { startRecording, stopRecording, text } = useRecordVoice();
 
     useEffect(() => {
         // Create WebSocket connection.
-        webSocketRef.current = new WebSocket('ws://localhost:8080');
+        // webSocketRef.current = new WebSocket('ws://localhost:8080');
 
-        // Commands for WebSocket events
-        webSocketRef.current.onopen = () => {
-            console.log('WebSocket Client Connected');
-        };
-        webSocketRef.current.onclose = () => {
-            console.log('WebSocket Client Disconnected');
-        };
+        // // Commands for WebSocket events
+        // webSocketRef.current.onopen = () => {
+        //     console.log('WebSocket Client Connected');
+        // };
+        // webSocketRef.current.onclose = () => {
+        //     console.log('WebSocket Client Disconnected');
+        // };
 
-        return () => {
-            webSocketRef.current.close();
-        };
+        // return () => {
+        //     webSocketRef.current.close();
+        // };
 
     }, []);
 
-    const startRecording = async () => {
+    const startRecordingWebsock = async () => {
 
         if (webSocketRef.current.readyState === WebSocket.CLOSED) {
             console.log('WebSocket is closed');
@@ -58,18 +60,29 @@ export default function Dashboard() {
         }
     };
 
-    const stopRecording = async () => {
+    const stopRecordingWebsock = async () => {
         mediaRecorderRef.current.stop();
         setIsRecording(false);
         // Close the media stream
         mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop())
     };
 
+    const handleButtonClick = () => {
+        if (isRecording) {
+            stopRecording();
+            setIsRecording(false)
+        } else {
+            startRecording();
+            setIsRecording(true)
+        }
+    };
+
     return (
         <div className="flex justify-center inset-0 fixed items-center h-screen bg-gradient-to-r from-blue-500 to-purple-500">
-            <Button onClick={isRecording ? stopRecording : startRecording}>
+            <Button onClick={handleButtonClick}>
                 {isRecording ? 'Stop Recording' : 'Start Recording'}
             </Button>
+            <p>{text}</p>
         </div>
     );
 }

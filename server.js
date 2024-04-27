@@ -62,7 +62,10 @@ wss.on('connection', function connection(ws) {
     });
 });
 
+
+
 async function performTranscription(filePath) {
+    console.log(filePath);
     try {
         const transcription = await openai.audio.transcriptions.create({
             file: fs.createReadStream(filePath),

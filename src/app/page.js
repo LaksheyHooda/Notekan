@@ -19,37 +19,30 @@ export default function Home() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const handleSignup = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password).then(
-        (userCredential) => {
-          router.replace(`/dashboard`);
-        }
-      );
+      await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+        //revalidatePath('/dashboard') // Update cached posts
+        router.replace(`/dashboard`)
+      })
     } catch (error) {
-      if (error.message === "Firebase: Error (auth/invalid-email).") {
-        setError("Invalid email.");
-      } else if (error.message === "Firebase: Error (auth/wrong-password).") {
-        setError("Invalid password.");
-      } else {
-        setError("An error occurred. Please try again.");
-      }
+      setError(error.message);
       setIsModalOpen(true);
     }
-  };
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
     handleSignup();
-  };
+  }
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSubmit(event);
     }
-  };
+  }
 
   return (
     <main className="flex justify-center items-center h-screen bg-gray-100">
@@ -94,7 +87,7 @@ export default function Home() {
               Forgot password?
             </Link>
           </div>
-          <Button className="py-2 px-4 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 shadow-gray-500/50 font-bold">
+          <Button onClick={handleSubmit} className="py-2 px-4 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 shadow-gray-500/50 font-bold">
             Login
           </Button>
         </form>

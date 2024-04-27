@@ -1,8 +1,7 @@
 'use client'
 
-import { useEffect, useState } from "react";
-
-
+import { useEffect, useState, useRef } from "react";
+import { Button } from "@nextui-org/react";
 
 export default function Signup() {
 
@@ -56,9 +55,9 @@ export default function Signup() {
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center p-24">
-            <button onClick={isRecording ? stopRecording : startRecording}>
+            <Button onClick={isRecording ? stopRecording : startRecording}>
                 {isRecording ? 'Stop Recording' : 'Start Recording'}
-            </button>
+            </Button>
         </div>
     );
 }

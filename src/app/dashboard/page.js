@@ -28,6 +28,11 @@ export default function Dashboard() {
     }, []);
 
     const startRecording = async () => {
+        if (webSocketRef.current.readyState !== WebSocket.OPEN) {
+            console.error('WebSocket is not open.');
+            webSocketRef.current = new WebSocket('ws://localhost:8080');
+        }
+
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             mediaRecorderRef.current = new MediaRecorder(stream);
@@ -51,6 +56,7 @@ export default function Dashboard() {
         setIsRecording(false);
         // Close the media stream
         mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+        webSocketRef.current.close();
     };
 
     return (

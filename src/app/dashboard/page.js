@@ -81,9 +81,9 @@ export default function Dashboard() {
     <div className="flex justify-center inset-0 fixed items-center h-screen bg-gradient-to-r from-blue-500 to-purple-500">
       <Button
         onClick={handleButtonClick}
-        className={
-          "w-20 h-20 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 ${isRecording ? 'animate-pulse' : ''}"
-        }
+        className={`w-20 h-20 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 ${
+          isRecording ? "animate-pulse" : ""
+        }`}
       >
         {isRecording ? (
           <FontAwesomeIcon className="h-6 w-6" icon={faSquare} />

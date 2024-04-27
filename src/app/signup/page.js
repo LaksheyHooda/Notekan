@@ -10,7 +10,7 @@ import Modal from "@/components/failedloginmodal";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
-import { Link } from "@nextui-org/react";
+import { Link } from "@nextui-org/react"; 
 
 export default function Signup() {
   const [email, setEmail] = useState("");

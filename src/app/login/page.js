@@ -45,7 +45,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex justify-center inset-0 fixed items-center h-screen bg-gray-100">
+    <main className="flex justify-center inset-0 fixed items-center h-screen bg-gradient-to-r from-blue-500 to-purple-500">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-slate-900 mb-4">
           Welcome to Notekan!

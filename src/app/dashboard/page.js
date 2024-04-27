@@ -54,7 +54,7 @@ export default function Signup() {
     };
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center p-24">
+        <div className="flex justify-center inset-0 fixed items-center h-screen bg-gradient-to-r from-blue-500 to-purple-500">
             <Button onClick={isRecording ? stopRecording : startRecording}>
                 {isRecording ? 'Stop Recording' : 'Start Recording'}
             </Button>

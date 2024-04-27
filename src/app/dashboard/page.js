@@ -28,8 +28,9 @@ export default function Dashboard() {
     }, []);
 
     const startRecording = async () => {
-        if (webSocketRef.current.readyState !== WebSocket.OPEN) {
-            console.error('WebSocket is not open.');
+
+        if (webSocketRef.current.readyState === WebSocket.CLOSED) {
+            console.log('WebSocket is closed');
             webSocketRef.current = new WebSocket('ws://localhost:8080');
         }
 
@@ -45,18 +46,23 @@ export default function Dashboard() {
                 }
             };
 
+
+            mediaRecorderRef.current.onstop = () => {
+                console.log('MediaRecorder stopped');
+                webSocketRef.current.close();
+            }
+
             setIsRecording(true);
         } catch (error) {
             console.error('Error accessing audio devices.', error);
         }
     };
 
-    const stopRecording = () => {
+    const stopRecording = async () => {
         mediaRecorderRef.current.stop();
         setIsRecording(false);
         // Close the media stream
-        mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
-        webSocketRef.current.close();
+        mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop())
     };
 
     return (

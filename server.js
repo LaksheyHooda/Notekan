@@ -26,32 +26,47 @@ const wss = new WebSocketServer({
 
 wss.on('connection', function connection(ws) {
     console.log('Connected to client via WebSocket');
-
-    const fileStream = fs.createWriteStream('output_audio_' + currentFile + '.webm');
+    const filePath = 'output_audio_' + currentFile + '.webm';
+    const fileStream = fs.createWriteStream(filePath);
     currentFile++;
 
     ws.on('message', function incoming(message) {
         console.log('Received message');
-        fileStream.write(message);
+        if (fileStream.writable) {
+            fileStream.write(message);
+        }
     });
 
-    ws.on('metadata', function incoming(metadata) {
-        console.log('Received metadata');
+    ws.on('end', function () {
+        console.log('end');
     });
 
     ws.on('close', async () => {
         console.log('Connection closed');
+        fileStream.end(null, null, async () => {
+            try {
+                await performTranscription(filePath);
+            } catch (error) {
+                console.error('Error in transcription:', error);
+            }
+        });
+    });
+
+    ws.on('error', (error) => {
+        console.log('WebSocket error:', error);
         fileStream.end();
+    });
 
-        await performTranscription();
-
+    fileStream.on('error', (error) => {
+        console.error('FileStream error:', error);
     });
 });
 
-async function performTranscription() {
+async function performTranscription(filePath) {
     try {
         const transcription = await openai.audio.transcriptions.create({
-            file: fs.createReadStream("output_audio_" + (currentFile - 1) + ".webm"),
+            file: fs.createReadStream(filePath),
+            fileFormat: "webm",
             model: "whisper-1",
         });
 

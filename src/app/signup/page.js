@@ -25,7 +25,7 @@ export default function Signup() {
         try {
             await createUserWithEmailAndPassword(auth, email, password).then(
                 (userCredential) => {
-                    router.replace(`/dashboard`);
+                    router.replace(`/login`);
                 }
             );
         } catch (error) {

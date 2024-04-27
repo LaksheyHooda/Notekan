@@ -8,13 +8,16 @@ import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Modal from "@/components/failedloginmodal";
-
+import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
+import { useRouter } from 'next/navigation'
 
 export default function Signup() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
+    const router = useRouter()
 
     useEffect(() => {
 
@@ -23,8 +26,8 @@ export default function Signup() {
     const handleSignup = async () => {
         try {
             await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-                revalidatePath('/dashboard') // Update cached posts
-                redirect('/dashboard');
+                //revalidatePath('/dashboard') // Update cached posts
+                router.replace(`/dashboard`)
             })
         } catch (error) {
             setError(error.message);

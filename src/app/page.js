@@ -19,37 +19,30 @@ export default function Home() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const handleSignup = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password).then(
-        (userCredential) => {
-          router.replace(`/dashboard`);
-        }
-      );
+      await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+        //revalidatePath('/dashboard') // Update cached posts
+        router.replace(`/dashboard`)
+      })
     } catch (error) {
-      if (error.message === "Firebase: Error (auth/invalid-email).") {
-        setError("Invalid email.");
-      } else if (error.message === "Firebase: Error (auth/wrong-password).") {
-        setError("Invalid password.");
-      } else {
-        setError("An error occurred. Please try again.");
-      }
+      setError(error.message);
       setIsModalOpen(true);
     }
-  };
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
     handleSignup();
-  };
+  }
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSubmit(event);
     }
-  };
+  }
 
   return (
     <main className="flex justify-center items-center h-screen bg-gray-100">

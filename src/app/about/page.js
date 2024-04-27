@@ -1,44 +1,40 @@
 import { Navbar } from '@nextui-org/react';
-import { motion } from 'framer-motion';
 
 export default function AboutUs() {
   return (
-    <div className="overflow-auto h-screen">
+    <div className="bg-fixed h-screen inset-0 overflow-auto h-screen bg-gradient-to-r from-[#481d80] to-[#000000]">
       <Navbar />
-      <div className="h-screen flex flex-col items-center">
-        <h1 className="text-6xl md:text-7xl font-bold text-white mt-4">
-          About Us
-        </h1>
-        <h2 className="text-2xl font-bold text-slate-100 mb-4">Our Story</h2>
-        <p className="text-gray-200 mb-6 mx-auto px-16">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut mattis
-          magna consectetur ex gravida commodo. Curabitur id turpis vel massa
-          cursus aliquet convallis ac magna. Proin sed libero eu tortor ultrices
-          porta tincidunt eget lacus. Ut dictum euismod tincidunt. Duis posuere
-          finibus urna, ut iaculis urna vehicula id. Phasellus rutrum molestie
-          lectus, at malesuada quam hendrerit a. Nulla non risus eget magna
-          varius vestibulum eu a mi.
+      <h1 className="text-4xl font-bold mb-8">About Us</h1>
+      <div>
+        <h2 className="text-2xl font-bold mb-4">Our Story</h2>
+        <p className="mb-4">
+          Nulla facilisi. Mauris quis condimentum odio, sit amet tempus libero.
+          Cras aliquam at massa eget placerat. Curabitur vitae dui vulputate,
+          pulvinar magna vel, sodales odio. Cras at posuere velit. Ut imperdiet
+          velit non leo commodo, nec vulputate elit egestas. Curabitur
+          condimentum, mauris non congue feugiat, leo est euismod eros, vel
+          tincidunt lacus odio eget mauris. Sed magna dolor, posuere vel dolor
+          sit amet, cursus iaculis libero. Duis scelerisque sapien mauris, et
+          commodo eros blandit quis. Fusce ac sem eu lorem fermentum dignissim
+          vel pharetra neque. Nunc cursus fringilla tempu
         </p>
-        <h2 className="text-2xl font-bold text-slate-100 mb-4">Our Mission</h2>
-        <p className="text-gray-200 mb-6 mb-6 mx-auto px-16">
-          Phasellus rutrum molestie lectus, at malesuada quam hendrerit a. Nulla
-          non risus eget magna varius vestibulum eu a mi. Duis in elit velit.
-          Vestibulum sodales porttitor eros, tristique pretium metus interdum
-          eu. Sed quis dui quis augue scelerisque ullamcorper consectetur nec
-          velit. Curabitur id sapien a purus consectetur cursus a ac sapien. Ut
-          odio libero, pulvinar nec blandit sed, efficitur ac arcu. Sed dui
-          ligula, vulputate et metus quis, pretium accumsan justo.
+        <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
+        <p className="mb-4">
+          mauris non congue feugiat, leo est euismod eros, vel tincidunt lacus
+          odio eget mauris. Sed magna dolor, posuere vel dolor sit amet, cursus
+          iaculis libero. Duis scelerisque sapien mauris, et commodo eros
+          blandit quis. Fusce ac sem eu lorem fermentum dignissim vel pharetra
+          neque. Nunc cursus fringilla tempu
         </p>
-        <h2 className="text-2xl font-bold text-slate-100 mb-4">Our Team</h2>
-        <p className="text-gray-200 mb-6 mb-6 mx-auto px-16">
-          In enim orci, bibendum id ullamcorper et, interdum quis arcu. Nulla a
-          purus pulvinar, pulvinar erat in, tempor elit. Integer cursus ornare
-          lectus. Praesent diam ligula, ultrices et molestie nec, pulvinar vitae
-          magna. Vestibulum eget mollis nisi, in fermentum turpis. Nulla purus
-          nibh, tincidunt vitae fermentum ac, lacinia non magna. Mauris
-          sollicitudin sagittis mauris vulputate gravida. Etiam id rhoncus
-          purus, quis tincidunt nunc. Cras malesuada sem mi, at auctor justo
-          placerat a.
+        <h2 className="text-2xl font-bold mb-4">Our Values</h2>
+        <p className="mb-4">
+          Duis nisi erat, egestas nec tempor vel, accumsan sed enim. Ut
+          porttitor elit eu nisi pretium commodo. Nam tempor dui quis faucibus
+          bibendum. Pellentesque fringilla, nisl ut gravida venenatis, sapien
+          arcu vehicula arcu, vitae laoreet justo risus id purus. Aliquam
+          molestie pellentesque nisi, eget auctor diam rhoncus quis. Vivamus in
+          pulvinar leo. Sed commodo posuere lacus. Cras sollicitudin ex purus.
+          Aliquam eu rhoncus tortor, v
         </p>
       </div>
     </div>

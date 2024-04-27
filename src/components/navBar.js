@@ -2,30 +2,9 @@ import { Link } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 export default function NavBar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.pageYOffset > 0) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  });
-
   return (
     <nav
-      className={`fixed top-0 w-full z-10 transition-colors duration-300 ${
-        isScrolled
-          ? "bg-gray-800 bg-opacity-80 backdrop-filter backdrop-blur-lg"
-          : "bg-transparent"
-      }`}
+      className={`fixed top-0 w-full z-50 transition-colors duration-300 bg-transparent`}
     >
       <div className="container mx-auto py-4 px-6 flex justify-between items-center">
         <Link className="text-white font-bold text-xl" href="/">

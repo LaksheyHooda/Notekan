@@ -36,14 +36,13 @@ export default function Home() {
           Welcome to NoteKan
         </h1>
         <p className="text-lg md:text-xl font-bold text-white mb-8">
-         One-Click AI Summaries: Transform Talks into Text Instantly!
+          We hate Confluence too.
         </p>
         <Link href="/login">
           <Button className="bg-[#e7c9dc] hover:bg-white-200 text-black font-bold py-2 px-4 rounded">
             Get Started
           </Button>
         </Link>
-        
 
         {isVisible && (
           <div className="absolute bottom-8 flex justify-center">

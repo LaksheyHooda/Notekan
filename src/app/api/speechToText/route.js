@@ -29,7 +29,7 @@ async function performGeneralSummaryTemplate(data, userID, type) {
           {
             role: "system",
             content:
-              "You are a helpful assistant designed to summerize meetings with a title and with a bulleted summary that returns JSON. Make sure the title accurately represents the content of the meeting.",
+            "You are a helpful assistant designed to summerize meetings with a title and with a bulleted summary that returns JSON. Make sure the title accurately represents the content of the meeting. Format the json to have a title and a summary, and under the summary have as many key-value pairs as appropriate.",
           },
           { role: "user", content: data.text },
         ],
@@ -52,7 +52,7 @@ async function performGeneralSummaryTemplate(data, userID, type) {
           {
             role: "system",
             content:
-              "You are a helpful assistant designed to create user stories, requirments, and validation metrics based of the meeting, with a title in json. Make sure the title accurately represents the content of the meeting. Make sure the user stories are in the format of 'As a [role], I want [feature] so that [reason]' and the requirements are in the format of 'Given [context], when [action], then [outcome]' and make the validation metric in a testable format. Add the user_stories, requirments, and validation metrics inside the a data key in json",
+            "You are a helpful assistant designed to create user stories, requirments, and validation metrics based of the meeting, with a acurate title in json. Make sure the title accurately represents the content of the meeting. Make sure the user stories are in the format of 'As a [role], I want [feature] so that [reason]' and the requirements are in the format of 'Given [context], when [action], then [outcome]' and make the validation metric in a testable format. Add the user_stories, requirments, and validation metrics inside the data key in json. Make user_stories, requirments, and validation metrics are arrays of strings following the given format.",
           },
           { role: "user", content: data.text },
         ],
@@ -80,10 +80,17 @@ async function saveRawAndProcessedTranscriptions(
 ) {
   const transcription = data.text;
   try {
+    var translatedData;
+    if(type === "kanban"){
+        translatedData = JSON.parse(processedData).data;
+    } else { 
+        translatedData = JSON.parse(processedData).summary;
+    }
+
     const newDocData = {
       userID: userID,
       title: JSON.parse(processedData).title,
-      data: JSON.parse(processedData).summary,
+      data: translatedData,
       time: new Date().getTime(),
       type: type,
     };

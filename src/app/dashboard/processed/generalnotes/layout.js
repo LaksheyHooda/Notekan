@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <div className="inline-block max-w-lg text-center justify-center">
+    <div className="inline-block max-w-lg text-center justify-center overscroll-x-none">
       {children}
     </div>
   );

@@ -118,7 +118,7 @@ export default function Processed() {
             {items.map((doc) => (
               <Link
                 key={doc.id}
-                href="#"
+                href={doc.data().type === "kanban" ? `processed/kanban?id=${doc.id}` : (doc.data().type === "general" ? 'processed/generalnotes?id=' + doc.id : "#")}
                 className="bg-white shadow rounded-lg overflow-hidden"
               >
                 <div className="h-40 bg-cover bg-center"></div>

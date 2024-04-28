@@ -9,7 +9,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
 import NavBar from "@/components/navBar";
 
-
 export default function Home() {
   return (
     <AnimatePresence mode="wait">
@@ -25,9 +24,18 @@ export default function Home() {
           <h1 className="text-6xl md:text-8xl font-bold text-[#e7c9dc] mb-4 animate-[pulse_4s_cubic-bezier(0.4,_0,_0.6,_1)_infinite]">
             Welcome to NoteKan
           </h1>
-          <p className="text-lg md:text-xl font-bold text-white mb-8">
-            We hate Confluence too.
-          </p>
+          <div className="flex flex-wrap justify-between">
+            <p className="text-lg md:text-xl font-bold text-white mb-8">
+              We hate
+            </p>
+            <p className="text-lg md:text-xl font-bold text-white mb-8 text-glitch text-glitch-fast">
+              &nbsp;Confluence
+            </p>
+            <p className="text-lg md:text-xl font-bold text-white mb-8">
+              &nbsp;too.
+            </p>
+          </div>
+
           <Link href="/login">
             <Button className="bg-[#e7c9dc] hover:bg-white-200 text-black font-bold py-2 px-4 rounded">
               Get Started

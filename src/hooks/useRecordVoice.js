@@ -34,6 +34,7 @@ export const useRecordVoice = () => {
 
   const getText = async (base64data) => {
     const user = auth.currentUser;
+    console.log(recordingType);
     try {
       setStatus(false);
       const response = await fetch("/api/speechToText", {
@@ -44,7 +45,7 @@ export const useRecordVoice = () => {
         body: JSON.stringify({
           audio: base64data,
           userid: user.uid,
-          type: recordingType,
+          type: recordingType.current,
         }),
       }).then((res) => res.json());
       const { text } = response;

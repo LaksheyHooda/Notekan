@@ -48,7 +48,7 @@ async function saveRawAndProcessedTranscriptions(data, userID, processedData) {
 
     const docData = {
         userID: userID,
-        title: "Meeting Summary",
+        title: JSON.parse(processedData).title,
         data: transcription,
         time: new Date().getTime(),
     };
@@ -79,19 +79,9 @@ async function addNewRawAndProcessedTranscriptionToUser(userID, docID, isRaw) {
                 });
                 console.log("Document updated with processedDocsIDs: ", docID);
             }
-            //return docSnap;
         } else {
             console.log("No such document!");
-            //return null;
         }
-
-        // if (docSnap.exists()) {
-        //     console.log("Document data:", docSnap.data());
-        //     return docSnap;
-        // } else {
-        //     console.log("No such document!");
-        //     return null;
-        // }
     } catch (error) {
         console.error("Error: ", error);
         return null;

@@ -13,15 +13,13 @@ import { useRouter } from "next/navigation";
 
 
 export default function Dashboard() {
-<<<<<<< HEAD
+  const router = useRouter();
   const [isRecording, setIsRecording] = useState(false);
   const [fileText, setFileText] = useState("");
   const mediaRecorderRef = useRef(null);
   const webSocketRef = useRef(null);
   const { startRecording, stopRecording, text } = useRecordVoice();
   const fileInputRef = useRef(null);
-
-  useEffect(() => {}, []);
 
   const handleButtonClick = () => {
     console.log("clicked");
@@ -33,14 +31,6 @@ export default function Dashboard() {
       setIsRecording(true);
     }
   };
-=======
-    const [isRecording, setIsRecording] = useState(false);
-    const [fileText, setFileText] = useState("");
-    const mediaRecorderRef = useRef(null);
-    const webSocketRef = useRef(null);
-    const { startRecording, stopRecording, text } = useRecordVoice();
-    const fileInputRef = useRef(null);
-    const router = useRouter();
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -51,7 +41,6 @@ export default function Dashboard() {
             }
         });
     }, []);
->>>>>>> 06dd194 (changes)
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -70,12 +59,17 @@ export default function Dashboard() {
             userid: user.uid,
           }),
         }).then((res) => res.json());
-        const { text } = response;
-        setText(text);
+        console.log(response);
+        setFileText(response);
       } catch (error) {
         console.log(error);
       }
     }
+  };
+
+  const handleClick = () => {
+    // When the label is clicked, trigger the input click
+      fileInputRef.current.click();
   };
 
   return (
@@ -99,23 +93,28 @@ export default function Dashboard() {
         </Button>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 max-w-3xl">
         <p>{fileText}</p>
         <p>{text}</p>
       </div>
 
       <div className="absolute bottom-4 right-4">
-        <label htmlFor="fileInput" className="cursor-pointer">
-          <Button className="bg-green-500 hover:bg-green-600 text-white rounded-full p-2 flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
-            <FontAwesomeIcon className="h-6 w-6" icon={faFileUpload} />
-          </Button>
-        </label>
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          accept=".txt"
-        />
+        <div className="file-upload-container">
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept=".txt"
+                style={{ display: 'none' }} // Hide the actual input element
+            />
+            <label
+                onClick={handleClick}
+                className="bg-green-500 w-20 hover:bg-green-600 text-white rounded-full p-2 flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
+            >
+                <FontAwesomeIcon className="h-6 w-6" icon={faFileUpload} />
+            </label>
+        </div>
       </div>
     </div>
   );

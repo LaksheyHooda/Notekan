@@ -3,6 +3,8 @@ import fs from "fs";
 import OpenAI from "openai";
 import { db } from "@/config/firebase/config";
 import { addDoc, setDoc, collection, doc, getDoc, query, where, getDocs, arrayUnion, updateDoc } from "firebase/firestore";
+import { patch } from "request";
+import path from "path";
 
 
 const openai = new OpenAI({
@@ -101,7 +103,7 @@ export async function POST(req) {
     const base64Audio = body.audio;
     const userID = body.userid;
     const audio = Buffer.from(base64Audio, "base64");
-    const filePath = "tmp/input.wav";
+    const filePath = path.join(process.cwd(), "audio.wav");
 
     try {
         fs.writeFileSync(filePath, audio);

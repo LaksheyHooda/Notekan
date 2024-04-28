@@ -16,7 +16,7 @@ import {
 } from "firebase/firestore";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
-import IndexDragable from "@/pages/index";
+import IndexDragable from "@/pages/kanbanIndex";
 
 export default function KanBan() {
   const [dataDoc, setDataDoc] = useState(null);
@@ -61,7 +61,7 @@ export default function KanBan() {
   };
 
   return (
-    <div className="flex flex-col pt-10 inset-0 w-screen min-h-screen bg-gradient-to-r from-white to-purple-500">
+    <div className="flex flex-col pt-10 inset-0 w-screen min-h-screen bg-gradient-to-r from-pink-500 to-blue-500">
       <IndexDragable documentData={dataDoc}/>
     </div>);
 }

@@ -148,7 +148,7 @@ export default function Home(documentData) {
 
   return (
     <div className="flex h-full w-full items-center  flex-col">
-      <p className="font-bold text-4xl mt-10 text-black">
+      <p className="font-bold text-4xl mt-10 text-white">
         Requirements Kanban Board
       </p>
       {/* Set up DragDropContext */}
@@ -197,38 +197,45 @@ export default function Home(documentData) {
           )}
         </Droppable>
       </DragDropContext>
-      <p className="font-bold text-4xl mt-10 pb-10 text-black">
-        Use Cases
-      </p>
-      <ul className="list-none max-w-3xl pl-10">
-        {useCases.map((useCase, index) => (
-          <li key={index} className="mt-2">
-            <label className="flex items-center text-left">
-              <input
-                type="checkbox"
-                className="mr-2"
-              />
-              {useCase}
-            </label>
-          </li>
-        ))}
-      </ul>
-      <p className="font-bold text-4xl mt-10 pb-10 text-black">
-        Validation Metrics
-      </p>
-      <ul className="max-w-3xl pl-10 pb-10 list-none">
-        {vaidationMetrics.map((metric, index) => (
-          <li key={index} className="mt-2">
-            <label className="flex items-center text-left">
-              <input
-                type="checkbox"
-                className="mr-2"
-              />
-              {metric}
-            </label>
-          </li>
-        ))}
-      </ul>
+      <div className="bordered bg-white rounded-md my-10">
+        <p className="font-bold text-4xl mt-10 pb-10 text-black">
+          Use Cases
+        </p>
+        <ul className="list-none max-w-3xl pb-10 pl-10 pr-10">
+          {useCases.map((useCase, index) => (
+            <li key={index} className="mt-2">
+              <label className="flex items-center text-left">
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                />
+                {useCase}
+              </label>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="bordered bg-white rounded-md my-10">
+        <p className="font-bold text-4xl mt-10 pb-10 text-black">
+          Validation Metrics
+        </p>
+        <ul className="max-w-3xl pl-10 pr-10 pb-10 list-none">
+          {vaidationMetrics.map((metric, index) => (
+            <li key={index} className="mt-2">
+              <label className="flex items-center text-left">
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                />
+                {metric}
+              </label>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 mb-20">
+          <a href="/dashboard/processed"> Done</a>
+      </button>
     </div>
     
 

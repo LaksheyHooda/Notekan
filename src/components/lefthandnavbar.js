@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
+import { useRef } from "react";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+  const sidebarRef = useRef(null);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -22,6 +24,19 @@ export default function Sidebar() {
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -70,7 +85,10 @@ export default function Sidebar() {
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="bg-white shadow-lg rounded-r-3xl p-6 flex flex-col justify-between relative">
+        <div
+          ref={sidebarRef}
+          className="bg-white shadow-lg rounded-r-3xl p-6 flex flex-col justify-between relative"
+        >
           <div className="absolute top-4 right-4">
             <Button
               onClick={toggleSidebar}

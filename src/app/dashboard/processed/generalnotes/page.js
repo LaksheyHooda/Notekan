@@ -1,7 +1,7 @@
 "use client";
 
 import { db, auth } from "@/config/firebase/config";
-import { Input } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import Link from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -49,7 +49,7 @@ export default function Home() {
   };
 
   const renderData = (data) => {
-    if (typeof data === 'object' && data !== null && !(data instanceof Date)) {
+    if (typeof data === "object" && data !== null && !(data instanceof Date)) {
       return (
         <div className="pl-4">
           {Object.entries(data).map(([key, value], index) => (
@@ -65,16 +65,26 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col pt-10 inset-0 w-screen min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 overscroll-x-none">
+    <div className="flex flex-col pt-10 inset-0 w-screen min-h-screen bg-gradient-to-r from-pink-500 to-blue-500 overscroll-x-none">
       {dataDoc ? (
         <div className="p-4 max-w-4xl mx-auto bg-white rounded-lg shadow">
-          <h1 className="text-center text-2xl font-bold">{dataDoc.title}</h1>
-          <h2 className="text-center text-lg">{new Date(dataDoc.time).toDateString()}</h2>
+          <h1 className="text-center text-black text-2xl font-bold">
+            {dataDoc.title}
+          </h1>
+          <h2 className="text-center text-black text-lg">
+            {new Date(dataDoc.time).toDateString()}
+          </h2>
           {Object.entries(dataDoc.data).map(([key, value], index) => (
-            <div key={index} className="flex flex-col mb-2 text-left">
+            <div
+              key={index}
+              className="flex flex-col mb-2 text-black text-left"
+            >
               <strong>{key}:</strong> {renderData(value)}
             </div>
           ))}
+          <Button onClick={() => router.replace(`/dashboard/processed`)} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300">
+            Done
+          </Button>
         </div>
       ) : (
         <p className="text-center text-white">Loading data...</p>

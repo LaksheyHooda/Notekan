@@ -64,8 +64,13 @@ export default function Sidebar() {
               </Link>
             </li>
             <li>
-              <Link href="/services" className="block p-4 hover:bg-gray-700">
-                Services
+              <Link href="/dashboard/archive" className="block p-4 hover:bg-gray-700">
+                Archive
+              </Link>
+            </li>
+            <li>
+              <Link href="/createTemplate" className="block p-4 hover:bg-gray-700">
+                Make a Template
               </Link>
             </li>
             <li>

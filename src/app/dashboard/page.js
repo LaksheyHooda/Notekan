@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Tooltip} from "@nextui-org/react";
 
 
 
@@ -22,36 +22,7 @@ export default function Dashboard() {
   const webSocketRef = useRef(null);
   const { startRecording, stopRecording, text } = useRecordVoice();
   const fileInputRef = useRef(null);
-  const [selectedKeys, setSelectedKeys] = useState("text");
-
-  function DropdownMenu() {
-    return (
-      <Dropdown>
-      <DropdownTrigger>
-        <Button 
-          variant="bordered" 
-          className="capitalize"
-        >
-          {selectedValue}
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu 
-        aria-label="Single selection example"
-        variant="flat"
-        disallowEmptySelection
-        selectionMode="single"
-        selectedKeys={selectedKeys}
-        onSelectionChange={setSelectedKeys}
-      >
-        <DropdownItem key="text">Text</DropdownItem>
-        <DropdownItem key="number">Number</DropdownItem>
-        <DropdownItem key="date">Date</DropdownItem>
-        <DropdownItem key="single_date">Single Date</DropdownItem>
-        <DropdownItem key="iteration">Iteration</DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-    );
-  }
+  const [selectedKeys, setSelectedKeys] = useState("general");
 
   const handleButtonClick = () => {
     console.log("clicked");
@@ -129,8 +100,42 @@ export default function Dashboard() {
         <p>{fileText}</p>
         <p>{text}</p>
       </div>
+      
+      <Dropdown className="">
+        <DropdownTrigger>
+          <Button 
+            className="capitalize absolute top-10 right-10"
+          >
+            {selectedKeys}
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu 
+          aria-label="Single selection example"
+          variant="flat"
+          disallowEmptySelection
+          selectionMode="single"
+          selectedKeys={selectedKeys}
+          onSelectionChange={setSelectedKeys}
+        >
+          <DropdownItem key="kanban">
+            <Tooltip content="Creates a kanban board with user stories and requirments" placement="left">
+              Kanban
+            </Tooltip>
+          </DropdownItem>
+          <DropdownItem key="general">
+            <Tooltip content="Creates general meeting notes and summary with a relevent title" placement="left">
+              General
+            </Tooltip>
+          </DropdownItem>
+          <DropdownItem key="Custom">
+            <Tooltip content="Creates general meeting notes and summary with a relevent title" placement="left">
+              Custom
+            </Tooltip>
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
 
-      <div className="absolute bottom-4 right-4">
+      <div className="absolute bottom-10 right-10">
         <div className="file-upload-container">
             <input
                 type="file"

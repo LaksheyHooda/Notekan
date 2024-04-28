@@ -10,9 +10,12 @@ export const useRecordVoice = () => {
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [recording, setRecording] = useState(false);
   const isRecording = useRef(false);
+  const recordingType = useRef("");
   const chunks = useRef([]);
 
-  const startRecording = () => {
+
+  const startRecording = (recordType) => {
+    recordingType.current = recordType;
     if (mediaRecorder) {
       isRecording.current = true;
       mediaRecorder.start();
@@ -39,6 +42,7 @@ export const useRecordVoice = () => {
         body: JSON.stringify({
           audio: base64data,
           userid: user.uid,
+          type: recordingType,
         }),
       }).then((res) => res.json());
       const { text } = response;

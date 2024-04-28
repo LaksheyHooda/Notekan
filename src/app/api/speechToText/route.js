@@ -92,8 +92,11 @@ export async function POST(req) {
     const body = await req.json();
     const base64Audio = body.audio;
     const userID = body.userid;
+    const type = body.type;
     const audio = Buffer.from(base64Audio, "base64");
     const filePath = path.join(process.cwd(), "audio.wav");
+
+    console.log(type)
 
     try {
         fs.writeFileSync(filePath, audio);

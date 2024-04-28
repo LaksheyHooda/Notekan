@@ -23,17 +23,19 @@ export default function Dashboard() {
   const webSocketRef = useRef(null);
   const { startRecording, stopRecording, text } = useRecordVoice();
   const fileInputRef = useRef(null);
-  const [selectedKeys, setSelectedKeys] = useState("general");
+  const [selectedKeys, setSelectedKeys] = useState(new Set(["general"]));
+  const [selectedKeyText, setSelectedKeyText] = useState("general"); 
   const [dropdownEnabled, setDropdownEnables] = useState(true);
+  const [Loading, setLoading] = useState(false);
 
   const handleButtonClick = () => {
     console.log("clicked");
     if (isRecording) {
       stopRecording();
       setIsRecording(false);
-      setDropdownEnables(true)
+      setDropdownEnables(true);
     } else {
-      startRecording();
+      startRecording(selectedKeyText);
       setIsRecording(true);
       setDropdownEnables(false)
     }
@@ -80,6 +82,11 @@ export default function Dashboard() {
       fileInputRef.current.click();
   };
 
+  const handleKeyChanged = (key) => {
+    setSelectedKeys(key);
+    setSelectedKeyText(key.currentKey);
+  }
+
   return (
     <div className="flex flex-col items-center justify-center inset-0 fixed h-screen bg-gradient-to-r from-blue-500 to-purple-500">
       <div className="mb-8">
@@ -115,12 +122,13 @@ export default function Dashboard() {
           </Button>
         </DropdownTrigger>
         <DropdownMenu 
+          className="text-black"
           aria-label="Single selection example"
           variant="flat"
           disallowEmptySelection
           selectionMode="single"
           selectedKeys={selectedKeys}
-          onSelectionChange={setSelectedKeys}
+          onSelectionChange={handleKeyChanged}
         >
           <DropdownItem key="kanban">
             <Tooltip content="Creates a kanban board with user stories and requirments" placement="left">

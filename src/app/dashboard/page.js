@@ -11,6 +11,7 @@ import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Tooltip} from "@nextui-org/react";
+import { set } from "firebase/database";
 
 
 
@@ -23,15 +24,18 @@ export default function Dashboard() {
   const { startRecording, stopRecording, text } = useRecordVoice();
   const fileInputRef = useRef(null);
   const [selectedKeys, setSelectedKeys] = useState("general");
+  const [dropdownEnabled, setDropdownEnables] = useState(true);
 
   const handleButtonClick = () => {
     console.log("clicked");
     if (isRecording) {
       stopRecording();
       setIsRecording(false);
+      setDropdownEnables(true)
     } else {
       startRecording();
       setIsRecording(true);
+      setDropdownEnables(false)
     }
   };
 
@@ -60,6 +64,7 @@ export default function Dashboard() {
           body: JSON.stringify({
             data: textFromFile,
             userid: user.uid,
+            type: selectedKeys,
           }),
         }).then((res) => res.json());
         console.log(response);
@@ -101,7 +106,7 @@ export default function Dashboard() {
         <p>{text}</p>
       </div>
       
-      <Dropdown className="">
+      <Dropdown className="" isDisabled={!dropdownEnabled}>
         <DropdownTrigger>
           <Button 
             className="capitalize absolute top-10 right-10"

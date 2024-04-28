@@ -72,7 +72,10 @@ export default function Sidebar() {
       >
         <div className="bg-white shadow-lg rounded-r-3xl p-6 flex flex-col justify-between relative">
           <div className="absolute top-4 right-4">
-            <Button onClick={toggleSidebar} className="bg-gray-200 hover:bg-gray-300 rounded-full p-2 focus:outline-none w-10 h-10">
+            <Button
+              onClick={toggleSidebar}
+              className="bg-gray-200 hover:bg-gray-300 rounded-full p-2 focus:outline-none w-10 h-10"
+            >
               <svg
                 className="w-6 h-6 text-gray-600"
                 fill="none"
@@ -92,14 +95,14 @@ export default function Sidebar() {
           <div>
             <div className="mt-12   md:border-2 rounded-full p-4">
               <Link href="/" className="md:w-48 md:h-48 max-w-full h-auto">
-              <img
-                src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg?size=338&ext=jpg&ga=GA1.1.1224184972.1714089600&semt=sph"
-                alt="Logo"
-                className="rounded-full"
-              />
-            </Link>
+                <img
+                  src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg?size=338&ext=jpg&ga=GA1.1.1224184972.1714089600&semt=sph"
+                  alt="Logo"
+                  className="rounded-full"
+                />
+              </Link>
             </div>
-            
+
             <nav className="mt-8">
               <Link
                 href="/dashboard"

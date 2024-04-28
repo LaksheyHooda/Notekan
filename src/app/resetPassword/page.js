@@ -26,7 +26,7 @@ export default function ForgotPassword() {
       const user = auth.currentUser;
       await updatePassword(user, confirmPassword).then(() => {
         router.replace(`/login`);
-      })
+      });
     } catch (error) {
       setError(error.message);
       setIsModalOpen(true);

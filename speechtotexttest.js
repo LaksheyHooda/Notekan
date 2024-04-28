@@ -1,7 +1,9 @@
 const OpenAI = require("openai");
 
 //turn into enviroment variable
-const openai = new OpenAI({ apiKey: 'sk-proj-0CwNwWN0Po6pi6EU857tT3BlbkFJNHIJrbixJn5QZZbHo0LJ' });
+const openai = new OpenAI({
+  apiKey: "sk-proj-0CwNwWN0Po6pi6EU857tT3BlbkFJNHIJrbixJn5QZZbHo0LJ",
+});
 
 const fs = require("fs");
 
@@ -15,17 +17,17 @@ async function main() {
 }
 //main();
 
-const ffmpeg = require('fluent-ffmpeg');
-ffmpeg.setFfmpegPath('/opt/homebrew/bin/ffmpeg');  // Set this to the correct path
+const ffmpeg = require("fluent-ffmpeg");
+ffmpeg.setFfmpegPath("/opt/homebrew/bin/ffmpeg"); // Set this to the correct path
 
-ffmpeg('output_audio.webm')
-  .fromFormat('webm')
-  .toFormat('mp3')
-  .audioCodec('libmp3lame')
-  .on('error', function (err) {
-    console.log('An error occurred: ' + err.message);
+ffmpeg("output_audio.webm")
+  .fromFormat("webm")
+  .toFormat("mp3")
+  .audioCodec("libmp3lame")
+  .on("error", function (err) {
+    console.log("An error occurred: " + err.message);
   })
-  .on('end', function () {
-    console.log('Conversion finished successfully.');
+  .on("end", function () {
+    console.log("Conversion finished successfully.");
   })
-  .save('output.mp3');
+  .save("output.mp3");

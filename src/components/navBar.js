@@ -14,7 +14,10 @@ export default function NavBar() {
         <div className="hidden md:block">
           <ul className="flex space-x-4">
             <li>
-              <Link className="text-white hover:text-gray-400" href="/dashboard">
+              <Link
+                className="text-white hover:text-gray-400"
+                href="/dashboard"
+              >
                 Dashboard
               </Link>
             </li>

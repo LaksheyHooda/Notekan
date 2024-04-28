@@ -70,15 +70,36 @@ export default function Sidebar() {
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="bg-white shadow-lg rounded-r-3xl p-6 flex flex-col justify-between">
+        <div className="bg-white shadow-lg rounded-r-3xl p-6 flex flex-col justify-between relative">
+          <div className="absolute top-4 right-4">
+            <Button onClick={toggleSidebar} className="bg-gray-200 hover:bg-gray-300 rounded-full p-2 focus:outline-none w-10 h-10">
+              <svg
+                class="w-6 h-6 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </Button>
+          </div>
           <div>
-            <Link href="/" className="flex items-center space-x-4">
+            <div className="mt-12 md:border-2 rounded-full p-4">
+              <Link href="/" className="md:w-48 md:h-48 max-w-full h-auto">
               <img
                 src="https://img.freepik.com/free-vector/bird-colorful-logo-gradient-vector_343694-1365.jpg?size=338&ext=jpg&ga=GA1.1.1224184972.1714089600&semt=sph"
                 alt="Logo"
                 className="rounded-full"
               />
             </Link>
+            </div>
+            
             <nav className="mt-8">
               <Link
                 href="/dashboard"
@@ -303,7 +324,7 @@ export default function Sidebar() {
               </Link>
             </nav>
           </div>
-          <div>
+          <div className="flex items-center justify-between">
             <Link
               href="/login"
               className="flex items-center space-x-4 py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors duration-300"
@@ -323,6 +344,31 @@ export default function Sidebar() {
                 ></path>
               </svg>
               <span className="font-medium text-gray-800">Logout</span>
+            </Link>
+            <Link
+              href="#"
+              className="flex items-center space-x-4 py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors duration-300"
+            >
+              <svg
+                className="w-6 h-6 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                ></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                ></path>
+              </svg>
             </Link>
           </div>
         </div>

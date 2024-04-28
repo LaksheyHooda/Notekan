@@ -36,19 +36,16 @@ export default function Archive() {
         }
     }
 
-    const filteredItems = items.filter((item) => {
-        item.title.toLowerCase().includes(searchTerm.toLowerCase());
-    });
+    const handleSwitchTerm = (e) => {
+        console.log(e.target.value);
+        setSortBy(e.target.value);
 
-    const sortedItems = filteredItems.sort((a, b) => {
-        if (sortBy === "date") {
-            return new Date(b.date) - new Date(a.date);
-        } else if (sortBy === "title") {
-            return a.title.localeCompare(b.title);
-        } else {
-            return a.category.localeCompare(b.category);
+        if(e.target.value === "date") {
+            setItems([...rawDocs].sort((a, b) => new Date(b.data().time) - new Date(a.data().time)));
+        } else if(e.target.value === "title") {
+            setItems([...rawDocs].sort((a, b) => a.data().title.localeCompare(b.data().title)));
         }
-    });
+    };
 
     return (
         <div className="flex w-screen min-h-screen bg-gradient-to-r from-blue-500 to-purple-500">
@@ -68,7 +65,7 @@ export default function Archive() {
                     <select
                         className="rounded-md px-4 py-2 text-black"
                         value={sortBy}
-                        onChange={(e) => setSortBy(e.target.value)}
+                        onChange={handleSwitchTerm}
                     >
                         <option className="text-black" value="date">
                             Date
@@ -95,9 +92,6 @@ export default function Archive() {
                                 <td className="pb-2 pt-2 pl-4" style={{ width: "20%" }}>{new Date(doc.data().time).toLocaleString()}</td>
                             </tr>
                         ))}
-                        {
-                            console.log("rawDocs: ", rawDocs)
-                        }
                     </tbody>
                 </table>
 

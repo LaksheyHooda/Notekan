@@ -24,8 +24,8 @@ export default function NavBar() {
               </Link>
             </li>
             <li>
-              <Link className="text-white hover:text-gray-400" href="/contact">
-                Contact
+              <Link className="text-white hover:text-gray-400" href="/login">
+                Login
               </Link>
             </li>
           </ul>

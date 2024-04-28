@@ -17,7 +17,7 @@ export default function Home() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-fixed h-screen inset-0 overflow-auto h-screen bg-gradient-to-r from-[#481d80] to-[#000000]"
+        className="bg-fixed h-screen inset-0 overflow-auto bg-gradient-to-r from-[#481d80] to-[#000000]"
       >
         <NavBar />
         <div className="flex flex-col items-center justify-center h-screen">

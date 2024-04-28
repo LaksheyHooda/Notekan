@@ -47,9 +47,9 @@ export default function Home() {
             {
                 dataDoc ? (
                     <div>
-                        <h1 className="text-center text-2xl font-bold">{dataDoc.title}</h1>
-
-                        <p>{dataDoc.data}</p>
+                        <h1 className="text-center max-w-3xl text-2xl font-bold">{dataDoc.title}</h1>
+                        <h2 className="text-center max-w-3xl text-lg font-bold">{new Date(dataDoc.time).toDateString()}</h2>
+                        <p className="max-w-3xl" >{dataDoc.data}</p>
                     </div>
                 ) : (
                     <h1>Loading...</h1>

@@ -10,13 +10,14 @@ const openai = new OpenAI({
 });
 
 async function performGeneralSummaryTemplate(data, userID) {
+    //console.log(data);
     const completion = await openai.chat.completions.create({
         messages: [
             {
                 role: "system",
-                content: "You are a helpful assistant designed to summerize meetings with a title and with a bulleted summary that returns JSON. Make sure the title acuratley represents the content of the meeting.",
+                content: "You are a helpful assistant designed to summerize meetings with a title and with a bulleted summary that returns JSON. Make sure the title acuratley represents the content of the meeting. Make sure to create the json in proper format, with key value pairs.",
             },
-            { role: "user", content: data.text },
+            { role: "user", content: data },
         ],
         model: "gpt-3.5-turbo-0125",
         response_format: { type: "json_object" },
@@ -24,11 +25,10 @@ async function performGeneralSummaryTemplate(data, userID) {
         console.log(response.choices[0].message.content);
         await saveRawAndProcessedTranscriptions(data, userID, response.choices[0].message.content);
     });
-    //console.log(completion.choices[0].message.content);
 }
 
 async function saveRawAndProcessedTranscriptions(data, userID, processedData) {
-    const transcription = data.text;
+    const transcription = data;
     try {
         const newDocData = {
             userID: userID,
@@ -98,24 +98,14 @@ async function addNewRawAndProcessedTranscriptionToUser(userID, docID, isRaw) {
 
 export async function POST(req) {
     const body = await req.json();
-    const base64Audio = body.audio;
     const userID = body.userid;
-    const audio = Buffer.from(base64Audio, "base64");
-    const filePath = "tmp/input.wav";
+    const data = body.data;
 
     try {
-        fs.writeFileSync(filePath, audio);
-        const readStream = fs.createReadStream(filePath);
-        const data = await openai.audio.transcriptions.create({
-            file: readStream,
-            model: "whisper-1",
-        });
-        // Remove the file after use
-        fs.unlinkSync(filePath);
         await performGeneralSummaryTemplate(data, userID)
         return NextResponse.json(data);
     } catch (error) {
-        console.error("Error processing audio:", error);
+        console.error("Error processing text:", error);
         return NextResponse.error();
     }
 }

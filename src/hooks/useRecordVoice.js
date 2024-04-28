@@ -2,6 +2,8 @@
 import { useEffect, useState, useRef } from "react";
 import { blobToBase64 } from "@/utils/blobToBase64";
 import { createMediaStream } from "@/utils/createMediaStream";
+import { db, auth } from "@/config/firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
 
 export const useRecordVoice = () => {
   const [text, setText] = useState("");
@@ -27,6 +29,7 @@ export const useRecordVoice = () => {
   };
 
   const getText = async (base64data) => {
+    const user = auth.currentUser;
     try {
       const response = await fetch("/api/speechToText", {
         method: "POST",
@@ -35,6 +38,7 @@ export const useRecordVoice = () => {
         },
         body: JSON.stringify({
           audio: base64data,
+          userid: user.uid,
         }),
       }).then((res) => res.json());
       const { text } = response;

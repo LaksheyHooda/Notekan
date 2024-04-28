@@ -9,6 +9,7 @@ export const useRecordVoice = () => {
   const [text, setText] = useState("");
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [recording, setRecording] = useState(false);
+  const [status, setStatus] = useState(true);
   const isRecording = useRef(false);
   const recordingType = useRef("");
   const chunks = useRef([]);
@@ -34,6 +35,7 @@ export const useRecordVoice = () => {
   const getText = async (base64data) => {
     const user = auth.currentUser;
     try {
+      setStatus(false);
       const response = await fetch("/api/speechToText", {
         method: "POST",
         headers: {
@@ -47,6 +49,7 @@ export const useRecordVoice = () => {
       }).then((res) => res.json());
       const { text } = response;
       setText(text);
+      setStatus(true);
     } catch (error) {
       console.log(error);
     }
@@ -80,5 +83,5 @@ export const useRecordVoice = () => {
     }
   }, []);
 
-  return { recording, startRecording, stopRecording, text };
+  return { recording, startRecording, stopRecording, text, status };
 };

@@ -12,8 +12,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Tooltip} from "@nextui-org/react";
 import { set } from "firebase/database";
-
-
+import {Spinner} from "@nextui-org/react";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -21,12 +20,12 @@ export default function Dashboard() {
   const [fileText, setFileText] = useState("");
   const mediaRecorderRef = useRef(null);
   const webSocketRef = useRef(null);
-  const { startRecording, stopRecording, text } = useRecordVoice();
+  const { startRecording, stopRecording, text, status } = useRecordVoice();
   const fileInputRef = useRef(null);
   const [selectedKeys, setSelectedKeys] = useState(new Set(["general"]));
   const [selectedKeyText, setSelectedKeyText] = useState("general"); 
   const [dropdownEnabled, setDropdownEnables] = useState(true);
-  const [Loading, setLoading] = useState(false);
+  const [processing, setProcessing] = useState(true);
 
   const handleButtonClick = () => {
     console.log("clicked");
@@ -57,6 +56,7 @@ export default function Dashboard() {
       const textFromFile = await file.text();
 
       const user = auth.currentUser;
+      setProcessing(false);
       try {
         const response = await fetch("/api/handleTextConversion", {
           method: "POST",
@@ -66,11 +66,12 @@ export default function Dashboard() {
           body: JSON.stringify({
             data: textFromFile,
             userid: user.uid,
-            type: selectedKeys,
+            type: selectedKeyText,
           }),
         }).then((res) => res.json());
         console.log(response);
         setFileText(response);
+        setProcessing(true)
       } catch (error) {
         console.log(error);
       }
@@ -92,21 +93,23 @@ export default function Dashboard() {
       <div className="mb-8">
         <h1 className="text-bold text-2xl h-16">NoteKan</h1>
       </div>
-
-      <div className="flex items-center justify-center">
-        <Button
-          onClick={handleButtonClick}
-          className={
-            "w-20 h-20 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 ${isRecording ? 'animate-pulse' : ''}"
-          }
-        >
-          {isRecording ? (
-            <FontAwesomeIcon className="h-6 w-6" icon={faSquare} />
-          ) : (
-            <FontAwesomeIcon className="h-6 w-6" icon={faMicrophone} />
-          )}
-        </Button>
-      </div>
+      {status && processing ? 
+        <div className="flex items-center justify-center">
+          <Button
+            onClick={handleButtonClick}
+            className={
+              "w-20 h-20 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 ${isRecording ? 'animate-pulse' : ''}"
+            }
+          >
+            {isRecording ? (
+              <FontAwesomeIcon className="h-6 w-6" icon={faSquare} />
+            ) : (
+              <FontAwesomeIcon className="h-6 w-6" icon={faMicrophone} />
+            )}
+          </Button>
+        </div>
+      : <div><Spinner /></div>}
+      
 
       <div className="mt-8 max-w-3xl">
         <p>{fileText}</p>

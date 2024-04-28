@@ -11,25 +11,42 @@ const openai = new OpenAI({
     apiKey: 'sk-proj-0CwNwWN0Po6pi6EU857tT3BlbkFJNHIJrbixJn5QZZbHo0LJ',
 });
 
-async function performGeneralSummaryTemplate(data, userID) {
-    const completion = await openai.chat.completions.create({
-        messages: [
-            {
-                role: "system",
-                content: "You are a helpful assistant designed to summerize meetings with a title and with a bulleted summary that returns JSON. Make sure the title acuratley represents the content of the meeting.",
-            },
-            { role: "user", content: data.text },
-        ],
-        model: "gpt-3.5-turbo-0125",
-        response_format: { type: "json_object" },
-    }).then(async (response) => {
-        console.log(response.choices[0].message.content);
-        await saveRawAndProcessedTranscriptions(data, userID, response.choices[0].message.content);
-    });
+async function performGeneralSummaryTemplate(data, userID, type) {
+    if(type === "general") {
+        const completion = await openai.chat.completions.create({
+            messages: [
+                {
+                    role: "system",
+                    content: "You are a helpful assistant designed to summerize meetings with a title and with a bulleted summary that returns JSON. Make sure the title accurately represents the content of the meeting.",
+                },
+                { role: "user", content: data.text },
+            ],
+            model: "gpt-3.5-turbo-0125",
+            response_format: { type: "json_object" },
+        }).then(async (response) => {
+            console.log(response.choices[0].message.content);
+            await saveRawAndProcessedTranscriptions(data, userID, response.choices[0].message.content, type);
+        });
+    } else if(type === "kanban") {
+        const completion = await openai.chat.completions.create({
+            messages: [
+                {
+                    role: "system",
+                    content: "You are a helpful assistant designed to create user stories, requirments, and validation metrics based of the meeting, with a title in json. Make sure the title accurately represents the content of the meeting. Make sure the user stories are in the format of 'As a [role], I want [feature] so that [reason]' and the requirements are in the format of 'Given [context], when [action], then [outcome]' and make the validation metric in a testable format. Add the user_stories, requirments, and validation metrics inside the a data key in json",
+                },
+                { role: "user", content: data.text },
+            ],
+            model: "gpt-3.5-turbo-0125",
+            response_format: { type: "json_object" },
+        }).then(async (response) => {
+            console.log(response.choices[0].message.content);
+            await saveRawAndProcessedTranscriptions(data, userID, response.choices[0].message.content, type);
+        });
+    }
     //console.log(completion.choices[0].message.content);
 }
 
-async function saveRawAndProcessedTranscriptions(data, userID, processedData) {
+async function saveRawAndProcessedTranscriptions(data, userID, processedData, type) {
     const transcription = data.text;
     try {
         const newDocData = {
@@ -37,7 +54,7 @@ async function saveRawAndProcessedTranscriptions(data, userID, processedData) {
             title: JSON.parse(processedData).title,
             data: JSON.parse(processedData).summary,
             time: new Date().getTime(),
-            type: "general"
+            type: type
         };
         await addDoc(collection(db, "processedDocuments"), newDocData).then(async (docRef) => {
             await addNewRawAndProcessedTranscriptionToUser(userID, docRef.id, false);
@@ -96,8 +113,6 @@ export async function POST(req) {
     const audio = Buffer.from(base64Audio, "base64");
     const filePath = path.join(process.cwd(), "audio.wav");
 
-    console.log(type)
-
     try {
         fs.writeFileSync(filePath, audio);
         const readStream = fs.createReadStream(filePath);
@@ -107,7 +122,7 @@ export async function POST(req) {
         });
         // Remove the file after use
         fs.unlinkSync(filePath);
-        await performGeneralSummaryTemplate(data, userID)
+        await performGeneralSummaryTemplate(data, userID, type)
         return NextResponse.json(data);
     } catch (error) {
         console.error("Error processing audio:", error);

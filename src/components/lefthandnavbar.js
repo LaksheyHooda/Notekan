@@ -1,8 +1,5 @@
 "use client";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
-
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "@nextui-org/react";
@@ -31,14 +28,13 @@ export default function Sidebar() {
   return (
     <div className="flex h-screen absolute z-10">
       <Button
-        className="bg-transparent text-black hover:text-white rounded-md transition-colors"
+        className="bg-transparent fill-current text-black hover:text-red-500 rounded-md transition-colors"
         onClick={toggleSidebar}
       >
         {isOpen ? (
           " "
         ) : (
           <svg
-            class="stroke-current text-black hover:text-white transition-colors"
             width="24"
             height="24"
             viewBox="0 0 24 24"

@@ -2,7 +2,6 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesRight } from "@fortawesome/free-solid-svg-icons";
-import { faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 
 import { useState } from "react";
 import { useEffect } from "react";
@@ -32,17 +31,42 @@ export default function Sidebar() {
   return (
     <div className="flex h-screen absolute z-10">
       <Button
-        className="bg-transparent text-black hover:text-blue-800 rounded-md transition-colors"
+        className="bg-transparent text-black hover:text-white rounded-md transition-colors"
         onClick={toggleSidebar}
       >
         {isOpen ? (
           " "
         ) : (
-          <FontAwesomeIcon
-            className="text-xl"
-            aria-hidden="true"
-            icon={faAnglesRight}
-          />
+          <svg
+            class="stroke-current text-black hover:text-white transition-colors"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 6H20"
+              stroke="#000000"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M4 12H20"
+              stroke="#000000"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M4 18H20"
+              stroke="#000000"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
         )}
       </Button>
       <div
@@ -237,7 +261,9 @@ export default function Sidebar() {
                     d="M13 10V3L4 14h7v7l9-11h-7z"
                   ></path>
                 </svg>
-                <span className="font-medium text-gray-800">Custom Templates</span>
+                <span className="font-medium text-gray-800">
+                  Custom Templates
+                </span>
               </Link>
               <Link
                 href="/about"

@@ -261,7 +261,7 @@ export default function Sidebar() {
                 <span className="font-medium text-gray-800">Archive</span>
               </Link>
               <Link
-                href="/dashboard/customTemplates"
+                href="/dashboard/customtemplates"
                 className="flex items-center space-x-4 py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors duration-300"
               >
                 <svg

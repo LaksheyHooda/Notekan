@@ -16,7 +16,7 @@ import {
 } from "firebase/firestore";
 
 const openai = new OpenAI({
-  apiKey: "sk-proj-0CwNwWN0Po6pi6EU857tT3BlbkFJNHIJrbixJn5QZZbHo0LJ",
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 async function performGeneralSummaryTemplate(data, userID, type) {

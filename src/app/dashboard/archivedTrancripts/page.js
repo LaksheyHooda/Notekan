@@ -77,7 +77,7 @@ export default function Archive() {
     <div className="flex w-screen min-h-screen bg-gradient-to-r from-blue-500 to-purple-500">
       <div className="container justify-center mx-auto py-8">
         <h1 className="text-4xl font-bold mb-6 text-center text-white">
-          NoteKan Archive
+          NoteKan Script Archive
         </h1>
 
         <div className="mb-6 flex justify-center space-x-4">
@@ -134,7 +134,7 @@ export default function Archive() {
                 >
                   <td className="pb-2 pt-2 pr-4" style={{ width: "80%" }}>
                     <a
-                      href={"/dashboard/archive/transcriptcontent?id=" + doc.id}
+                      href={"/dashboard/archivedtranscripts/transcriptcontent?id=" + doc.id}
                       className="text-blue-500 hover:text-blue-700 transition-colors duration-300"
                     >
                       {doc.data().title}

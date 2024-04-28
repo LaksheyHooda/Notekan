@@ -4,89 +4,104 @@ import { db, auth } from "@/config/firebase/config";
 import { Input } from "@nextui-org/react";
 import Link from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { onAuthStateChanged } from "firebase/auth";
+import { collection, getDocs, query, where, getDoc, doc } from "firebase/firestore";
 
 export default function Archive() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("date");
-  const [items, setItems] = useState([
-    { id: 1, title: "Item 1", date: "2023-04-01" },
-    { id: 2, title: "Item 2", date: "2023-04-15" },
-    { id: 3, title: "Item 3", date: "2023-05-01" },
-    { id: 4, title: "Item 4", date: "2023-05-20" },
-    { id: 5, title: "Item 5", date: "2023-06-01" },
-  ]);
+    const router = useRouter();
+    const [searchTerm, setSearchTerm] = useState("");
+    const [sortBy, setSortBy] = useState("date");
+    const [items, setItems] = useState([]);
+    const [rawDocs, setRawDocs] = useState([]);
 
-  const filteredItems = items.filter((item) => {
-    item.title.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                getItems(user.uid)
+            } else {
+                router.replace(`/login`);
+            }
+        });
+    }, []);
 
-  const sortedItems = filteredItems.sort((a, b) => {
-    if (sortBy === "date") {
-      return new Date(b.date) - new Date(a.date);
-    } else if (sortBy === "title") {
-      return a.title.localeCompare(b.title);
-    } else {
-      return a.category.localeCompare(b.category);
+    const getItems = async (userID) => {
+        try {
+            const q = query(collection(db, "transcriptions"), where("userID", "==", userID));
+            const querySnapshot = await getDocs(q);
+            setRawDocs(querySnapshot.docs);
+        } catch (error) {
+            console.error("Error: ", error);
+            return null;
+        }
     }
-  });
 
-  return (
-    <div className="flex justify-center inset-0 fixed items-center h-screen bg-gradient-to-r from-blue-500 to-purple-500">
-      <div className="container mx-auto py-8">
-        <h1 className="text-4xl font-bold mb-6">NoteKan Archive</h1>
+    const filteredItems = items.filter((item) => {
+        item.title.toLowerCase().includes(searchTerm.toLowerCase());
+    });
 
-        <div className="mb-6">
-          <Input
-            type="text"
-            placeholder="Search..."
-            className="rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-text caret-blue-500 animate-blink-wide"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+    const sortedItems = filteredItems.sort((a, b) => {
+        if (sortBy === "date") {
+            return new Date(b.date) - new Date(a.date);
+        } else if (sortBy === "title") {
+            return a.title.localeCompare(b.title);
+        } else {
+            return a.category.localeCompare(b.category);
+        }
+    });
 
-          <label className="mr-2">Sort By:</label>
-          <select
-            className="rounded-md px-4 py-2"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-          >
-            <option className="text-black" value="date">
-              Date
-            </option>
-            <option className="text-black" value="title">
-              Title
-            </option>
-          </select>
-        </div>
+    return (
+        <div className="flex w-screen min-h-screen bg-gradient-to-r from-blue-500 to-purple-500">
+            <div className="container justify-center mx-auto py-8">
+                <h1 className="text-4xl font-bold mb-6">NoteKan Archive</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-          {sortedItems.map((item) => (
-            <div key={item.id} className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-bold mb-2">{item.title}</h2>
-              <p className="text-black mb-2">{item.date}</p>
-              <p className="text-black mb-4">{item.category}</p>
+                <div className="mb-6 justify-center">
+                    <Input
+                        type="text"
+                        placeholder="Search..."
+                        className="rounded-md mx-auto justify-center max-w-3xl px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-text caret-blue-500 animate-blink-wide"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+
+                    <label className="mr-2">Sort By:</label>
+                    <select
+                        className="rounded-md px-4 py-2 text-black"
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                    >
+                        <option className="text-black" value="date">
+                            Date
+                        </option>
+                        <option className="text-black" value="title">
+                            Title
+                        </option>
+                    </select>
+                </div>
+
+                <table className="w-full max-w-3xl border-collapse mx-auto">
+                    <thead>
+                        <tr className="bg-gray-200 text-center">
+                            <th className="py-2 px-4 text-black" style={{ width: "80%" }}>Title</th>
+                            <th className="py-2 px-4 text-black" style={{ width: "20%" }}>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rawDocs.map((doc) => (
+                            <tr key={doc.id} className="border-b">
+                                <td className="pb-2 pt-2 pr-4" style={{ width: "80%" }}>
+                                    <a href={"/dashboard/archive/transcriptcontent?id=" + doc.id}>{doc.data().title}</a>
+                                </td>
+                                <td className="pb-2 pt-2 pl-4" style={{ width: "20%" }}>{new Date(doc.data().time).toLocaleString()}</td>
+                            </tr>
+                        ))}
+                        {
+                            console.log("rawDocs: ", rawDocs)
+                        }
+                    </tbody>
+                </table>
+
             </div>
-          ))}
         </div>
-
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="py-2 px-4 text-left text-black">Title</th>
-              <th className="py-2 px-4 text-left text-black">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedItems.map((item) => (
-              <tr key={item.id} className="border-b">
-                <td className="py-2 px-4">{item.title}</td>
-                <td className="py-2 px-4">{item.date}</td>
-                <td className="py-2 px-4">{item.category}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
+    );
 }

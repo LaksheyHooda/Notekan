@@ -9,8 +9,11 @@ import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "next/navigation";
+
 
 export default function Dashboard() {
+<<<<<<< HEAD
   const [isRecording, setIsRecording] = useState(false);
   const [fileText, setFileText] = useState("");
   const mediaRecorderRef = useRef(null);
@@ -30,6 +33,25 @@ export default function Dashboard() {
       setIsRecording(true);
     }
   };
+=======
+    const [isRecording, setIsRecording] = useState(false);
+    const [fileText, setFileText] = useState("");
+    const mediaRecorderRef = useRef(null);
+    const webSocketRef = useRef(null);
+    const { startRecording, stopRecording, text } = useRecordVoice();
+    const fileInputRef = useRef(null);
+    const router = useRouter();
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+
+            } else {
+                router.replace(`/login`);
+            }
+        });
+    }, []);
+>>>>>>> 06dd194 (changes)
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];

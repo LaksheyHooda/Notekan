@@ -46,7 +46,7 @@ async function saveRawAndProcessedTranscriptions(data, userID, processedData) {
 
     const docData = {
         userID: userID,
-        title: "Meeting Summary",
+        title: JSON.parse(processedData).title,
         data: transcription,
         time: new Date().getTime(),
     };

@@ -26,7 +26,7 @@ export default function Signup() {
             await createUserWithEmailAndPassword(auth, email, password).then(
                 async (userCredential) => {
                     await createUserInFirestore(userCredential.user);
-                    //router.replace(`/login`);
+                    router.replace(`/dashboard`);
                 }
             );
         } catch (error) {

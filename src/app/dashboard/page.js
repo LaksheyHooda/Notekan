@@ -56,35 +56,6 @@ export default function Dashboard() {
                 webSocketRef.current.close();
             };
 
-<<<<<<< HEAD
-            const handleButtonClick = () => {
-                console.log("clicked");
-                if (isRecording) {
-                    stopRecording();
-                    setIsRecording(false);
-                } else {
-                    startRecording();
-                    setIsRecording(true);
-                }
-            };
-
-            return (
-                <div className="flex justify-center inset-0 fixed items-center h-screen bg-gradient-to-r from-blue-500 to-purple-500">
-                    <Button
-                        onClick={handleButtonClick}
-                        className={`w-20 h-20 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 ${isRecording ? "animate-pulse" : ""
-                            }`}
-                    >
-                        {isRecording ? (
-                            <FontAwesomeIcon className="h-6 w-6" icon={faSquare} />
-                        ) : (
-                            <FontAwesomeIcon className="h-6 w-6" icon={faMicrophone} />
-                        )}
-                    </Button>
-                    <p>{text}</p>
-                </div>
-            );
-=======
             setIsRecording(true);
         } catch (error) {
             console.error("Error accessing audio devices.", error);
@@ -128,5 +99,4 @@ export default function Dashboard() {
             <p>{text}</p>
         </div>
     );
->>>>>>> 7caa324 (stuff)
-        }
+}

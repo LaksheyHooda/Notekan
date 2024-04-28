@@ -10,6 +10,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@nextui-org/react";
+
 
 
 export default function Dashboard() {
@@ -20,6 +22,36 @@ export default function Dashboard() {
   const webSocketRef = useRef(null);
   const { startRecording, stopRecording, text } = useRecordVoice();
   const fileInputRef = useRef(null);
+  const [selectedKeys, setSelectedKeys] = useState("text");
+
+  function DropdownMenu() {
+    return (
+      <Dropdown>
+      <DropdownTrigger>
+        <Button 
+          variant="bordered" 
+          className="capitalize"
+        >
+          {selectedValue}
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu 
+        aria-label="Single selection example"
+        variant="flat"
+        disallowEmptySelection
+        selectionMode="single"
+        selectedKeys={selectedKeys}
+        onSelectionChange={setSelectedKeys}
+      >
+        <DropdownItem key="text">Text</DropdownItem>
+        <DropdownItem key="number">Number</DropdownItem>
+        <DropdownItem key="date">Date</DropdownItem>
+        <DropdownItem key="single_date">Single Date</DropdownItem>
+        <DropdownItem key="iteration">Iteration</DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+    );
+  }
 
   const handleButtonClick = () => {
     console.log("clicked");

@@ -81,9 +81,8 @@ export default function Sidebar() {
         )}
       </Button>
       <div
-        className={`fixed inset-0 z-40 flex transition-transform duration-300 ease-in-out transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed inset-0 z-40 flex transition-transform duration-300 ease-in-out transform ${isOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div
           ref={sidebarRef}
@@ -258,7 +257,7 @@ export default function Sidebar() {
                 <span className="font-medium text-gray-800">Documents</span>
               </Link>
               <Link
-                href="/dashboard/archive"
+                href="/dashboard/archivedTranscripts"
                 className="flex items-center space-x-4 py-3 px-4 rounded-lg hover:bg-gray-100 transition-colors duration-300"
               >
                 <svg

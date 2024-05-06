@@ -28,7 +28,7 @@ const INITIAL_COL_DATA = {
 };
 
 const ITEMS = {
-  
+
 };
 
 // Function to generate a unique ID
@@ -49,7 +49,7 @@ export default function Home(documentData) {
   const [data, setData] = useState(INITIAL_COL_DATA);
   const [items, setItems] = useState(ITEMS);
   const [useCases, setUseCases] = useState([])
-  const [vaidationMetrics , setValidationMetrics] = useState([])
+  const [vaidationMetrics, setValidationMetrics] = useState([])
 
   useEffect(() => {
     if (documentData && documentData.documentData) {
@@ -69,7 +69,7 @@ export default function Home(documentData) {
       });
 
       // Update the items state with the new items
-      setItems(prevItems => ({...prevItems, ...newItems}));
+      setItems(prevItems => ({ ...prevItems, ...newItems }));
 
       // Assuming we're adding to the first column, update it with new items IDs
       const newItemsOrder = [...data['column-1'].itemsOrder, ...Object.keys(newItems)];
@@ -147,7 +147,7 @@ export default function Home(documentData) {
   };
 
   return (
-    <div className="flex h-full w-full items-center  flex-col">
+    <div className="flex h-full w-full items-center text-black flex-col">
       <p className="font-bold text-4xl mt-10 text-white">
         Requirements Kanban Board
       </p>
@@ -234,10 +234,10 @@ export default function Home(documentData) {
         </ul>
       </div>
       <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 mb-20">
-          <a href="/dashboard/processed"> Done</a>
+        <a href="/dashboard/processed"> Done</a>
       </button>
     </div>
-    
+
 
   );
 }

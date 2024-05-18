@@ -63,7 +63,7 @@ export default function Archive() {
 			const querySnapshot = await getDocs(q);
 
 			if (!querySnapshot.empty) {
-				console.log("Deleting: ", id);	
+				console.log("Deleting: ", id);
 				const docRef = doc(db, "transcriptions", id);
 				await deleteDoc(docRef);
 				getItems(auth.currentUser.uid);
@@ -140,65 +140,37 @@ export default function Archive() {
 							<tr className="bg-gray-200 text-center">
 								<th
 									className="py-2 px-4 text-black rounded-tl-lg"
-									style={{ width: "70%" }}
+									style={{ width: "80%" }}
 								>
 									Title
 								</th>
-								<th className="py-2 px-4 text-black" style={{ width: "20%" }}>
-									Date
-								</th>
 								<th
 									className="py-2 px-4 text-black rounded-tr-lg"
-									style={{ width: "10%" }}
-								></th>
+									style={{ width: "20%" }}
+								>
+									Date
+								</th>
 							</tr>
 						</thead>
 						<tbody>
 							{items.map((doc) => (
 								<tr
 									key={doc.id}
-									className="border-b hover:bg-gray-100 transition-colors duration-300 relative group"
+									className="border-b hover:bg-gray-100 transition-colors duration-300"
 								>
-									<td className="pb-2 pt-2 pr-4" style={{ width: "70%" }}>
-										<Link
-											href={
-												"/dashboard/archivedTranscripts/transcriptcontent?id=" +
-												doc.id
-											}
+									<td className="pb-2 pt-2 pr-4" style={{ width: "80%" }}>
+										<a
+											href={"/dashboard/archivedTranscripts/transcriptcontent?id=" + doc.id}
 											className="text-blue-500 hover:text-blue-700 transition-colors duration-300"
 										>
 											{doc.data().title}
-										</Link>
+										</a>
 									</td>
 									<td
-										className="text-black pb-2 pt-2 pl-4 pr-4"
+										className="text-black pb-2 pt-2 pl-4"
 										style={{ width: "20%" }}
 									>
 										{new Date(doc.data().time).toLocaleString()}
-									</td>
-									<td
-										className="pb-2 pt-2 pl-4 pr-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-										style={{ width: "10%" }}
-									>
-										<button
-											className="text-red-500 hover:text-red-700 transition-colors duration-300"
-											onClick={() => handleDeleteRow(doc.id)}
-										>
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												className="h-6 w-6"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke="currentColor"
-											>
-												<path
-													strokeLinecap="round"
-													strokeLinejoin="round"
-													strokeWidth={2}
-													d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-												/>
-											</svg>
-										</button>
 									</td>
 								</tr>
 							))}

@@ -20,6 +20,7 @@ const openai = new OpenAI({
 });
 
 async function performGeneralSummaryTemplate(data, userID, type) {
+  let newDocIdArray;
   if (type === "general") {
     const completion = await openai.chat.completions
       .create({
@@ -41,7 +42,9 @@ async function performGeneralSummaryTemplate(data, userID, type) {
           userID,
           response.choices[0].message.content,
           type
-        );
+        ).then((newDocsIds) => {
+          newDocIdArray = newDocsIds;
+        });
       });
   } else if (type === "kanban") {
     const completion = await openai.chat.completions
@@ -50,7 +53,7 @@ async function performGeneralSummaryTemplate(data, userID, type) {
           {
             role: "system",
             content:
-            "You are a helpful assistant designed to create user stories, requirments, and validation metrics based of the meeting, with a acurate title in json, including the keyword Kanban in the title. Make sure the title accurately represents the content of the meeting. Make sure the user stories are in the format of 'As a [role], I want [feature] so that [reason]' and the requirements are in the format of 'Given [context], when [action], then [outcome]' and make the validation metric in a testable format. Add the user_stories, requirments, and validation metrics inside the data key in json. Make user_stories, requirments, and validation metrics are arrays of strings following the given format.",
+              "You are a helpful assistant designed to create user stories, requirments, and validation metrics based of the meeting, with a acurate title in json, including the keyword Kanban in the title. Make sure the title accurately represents the content of the meeting. Make sure the user stories are in the format of 'As a [role], I want [feature] so that [reason]' and the requirements are in the format of 'Given [context], when [action], then [outcome]' and make the validation metric in a testable format. Add the user_stories, requirments, and validation metrics inside the data key in json. Make user_stories, requirments, and validation metrics are arrays of strings following the given format.",
           },
           { role: "user", content: data },
         ],
@@ -64,9 +67,12 @@ async function performGeneralSummaryTemplate(data, userID, type) {
           userID,
           response.choices[0].message.content,
           type
-        );
+        ).then((newDocsIds) => {
+          newDocIdArray = newDocsIds;
+        });
       });
   }
+  return newDocIdArray;
 }
 
 async function saveRawAndProcessedTranscriptions(
@@ -76,12 +82,13 @@ async function saveRawAndProcessedTranscriptions(
   type
 ) {
   const transcription = data;
+  let newDocIds = [];
   try {
     var translatedData;
-    if(type === "kanban"){
-        translatedData = JSON.parse(processedData).data;
-    } else { 
-        translatedData = JSON.parse(processedData).summary;
+    if (type === "kanban") {
+      translatedData = JSON.parse(processedData).data;
+    } else {
+      translatedData = JSON.parse(processedData).summary;
     }
 
     const newDocData = {
@@ -97,7 +104,9 @@ async function saveRawAndProcessedTranscriptions(
           userID,
           docRef.id,
           false
-        );
+        ).then((newId) => {
+          newDocIds.push(newId);
+        });
       }
     );
   } catch (error) {
@@ -113,12 +122,17 @@ async function saveRawAndProcessedTranscriptions(
   try {
     await addDoc(collection(db, "transcriptions"), docData).then(
       async (docRef) => {
-        await addNewRawAndProcessedTranscriptionToUser(userID, docRef.id, true);
+        await addNewRawAndProcessedTranscriptionToUser(userID, docRef.id, true)
+          .then((newId) => {
+            newDocIds.push(newId);
+          });
       }
     );
   } catch (error) {
     console.error("Error adding document: ", error);
   }
+
+  return newDocIds;
 }
 
 async function addNewRawAndProcessedTranscriptionToUser(userID, docID, isRaw) {
@@ -132,26 +146,18 @@ async function addNewRawAndProcessedTranscriptionToUser(userID, docID, isRaw) {
         await updateDoc(doc(db, "users", docSnap.id), {
           rawDocsIDs: arrayUnion(docID),
         });
-        console.log("Document updated with rawDocsIDs: ", docID);
+        return docID;
       } else {
         await updateDoc(doc(db, "users", docSnap.id), {
           processedDocsIDs: arrayUnion(docID),
         });
-        console.log("Document updated with processedDocsIDs: ", docID);
+        return docID;
       }
       //return docSnap;
     } else {
       console.log("No such document!");
       //return null;
     }
-
-    // if (docSnap.exists()) {
-    //     console.log("Document data:", docSnap.data());
-    //     return docSnap;
-    // } else {
-    //     console.log("No such document!");
-    //     return null;
-    // }
   } catch (error) {
     console.error("Error: ", error);
     return null;
@@ -163,12 +169,20 @@ export async function POST(req) {
   const userID = body.userid;
   const data = body.data;
   const type = body.type;
+  let docIds = [];
 
   console.log("Data: ", type);
 
   try {
-    await performGeneralSummaryTemplate(data, userID, type);
-    return NextResponse.json(data);
+    await performGeneralSummaryTemplate(data, userID, type).then((newDocsIds) => {
+      docIds = newDocsIds;
+      console.log("DocIds: ", newDocsIds);
+    });
+    const response = {
+      text: data,
+      docIds: docIds,
+    };
+    return NextResponse.json(response);
   } catch (error) {
     console.error("Error processing text:", error);
     return NextResponse.error();

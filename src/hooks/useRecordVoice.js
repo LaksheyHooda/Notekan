@@ -1,4 +1,7 @@
 "use client";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 import { useEffect, useState, useRef } from "react";
 import { blobToBase64 } from "@/utils/blobToBase64";
 import { createMediaStream } from "@/utils/createMediaStream";
@@ -7,6 +10,8 @@ import { onAuthStateChanged } from "firebase/auth";
 
 export const useRecordVoice = () => {
   const [text, setText] = useState("");
+  const [rawDocId, setRawDocId] = useState("");
+  const [processedDocId, setProcessedDocId] = useState("");
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [recording, setRecording] = useState(false);
   const [status, setStatus] = useState(true);
@@ -14,6 +19,12 @@ export const useRecordVoice = () => {
   const recordingType = useRef("");
   const chunks = useRef([]);
 
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
 
   const startRecording = (recordType) => {
     recordingType.current = recordType;
@@ -21,6 +32,9 @@ export const useRecordVoice = () => {
       isRecording.current = true;
       mediaRecorder.start();
       setRecording(true);
+      setRawDocId("");
+      setProcessedDocId("");
+      SpeechRecognition.startListening();
     }
   };
 
@@ -29,6 +43,7 @@ export const useRecordVoice = () => {
       isRecording.current = false;
       mediaRecorder.stop();
       setRecording(false);
+      SpeechRecognition.stopListening();
     }
   };
 
@@ -48,8 +63,17 @@ export const useRecordVoice = () => {
           type: recordingType.current,
         }),
       }).then((res) => res.json());
-      const { text } = response;
+      //console.log(response)
+      const { text } = response.text;
       setText(text);
+
+      if (response.docIds && response.docIds.length > 0) {
+        console.log(response.docIds);
+        setProcessedDocId(response.docIds[0]);
+        setRawDocId(response.docIds[1]);
+      }
+
+      resetTranscript();
       setStatus(true);
     } catch (error) {
       console.log(error);
@@ -66,6 +90,7 @@ export const useRecordVoice = () => {
 
     mediaRecorder.ondataavailable = (ev) => {
       chunks.current.push(ev.data);
+      console.log(chunks.current)
     };
 
     mediaRecorder.onstop = () => {
@@ -84,5 +109,5 @@ export const useRecordVoice = () => {
     }
   }, []);
 
-  return { recording, startRecording, stopRecording, text, status };
+  return { recording, startRecording, stopRecording, text, status, transcript, listening, browserSupportsSpeechRecognition, processedDocId, rawDocId };
 };

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
+import fs, { cp } from "fs";
 import OpenAI from "openai";
 import { db } from "@/config/firebase/config";
 import {
@@ -18,10 +18,11 @@ import { patch } from "request";
 import path from "path";
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 async function performGeneralSummaryTemplate(data, userID, type) {
+  let newDocIdArray;
   if (type === "general") {
     const completion = await openai.chat.completions
       .create({
@@ -29,7 +30,7 @@ async function performGeneralSummaryTemplate(data, userID, type) {
           {
             role: "system",
             content:
-            "You are a helpful assistant designed to summerize meetings with a title and with a bulleted summary that returns JSON. Make sure the title accurately represents the content of the meeting. Format the json to have a title and a summary, and under the summary have as many key-value pairs as appropriate.",
+              "You are a helpful assistant designed to summerize meetings with a title and with a bulleted summary that returns JSON. Make sure the title accurately represents the content of the meeting. Format the json to have a title and a summary, and under the summary have as many key-value pairs as appropriate.",
           },
           { role: "user", content: data.text },
         ],
@@ -43,7 +44,9 @@ async function performGeneralSummaryTemplate(data, userID, type) {
           userID,
           response.choices[0].message.content,
           type
-        );
+        ).then((newDocsIds) => {
+          newDocIdArray = newDocsIds;
+        });
       });
   } else if (type === "kanban") {
     const completion = await openai.chat.completions
@@ -52,7 +55,7 @@ async function performGeneralSummaryTemplate(data, userID, type) {
           {
             role: "system",
             content:
-            "You are a helpful assistant designed to create user stories, requirments, and validation metrics based of the meeting, with a acurate title in json. Make sure the title accurately represents the content of the meeting. Make sure the user stories are in the format of 'As a [role], I want [feature] so that [reason]' and the requirements are in the format of 'Given [context], when [action], then [outcome]' and make the validation metric in a testable format. Add the user_stories, requirments, and validation metrics inside the data key in json. Make user_stories, requirments, and validation metrics are arrays of strings following the given format.",
+              "You are a helpful assistant designed to create user stories, requirments, and validation metrics based of the meeting, with a acurate title in json. Make sure the title accurately represents the content of the meeting. Make sure the user stories are in the format of 'As a [role], I want [feature] so that [reason]' and the requirements are in the format of 'Given [context], when [action], then [outcome]' and make the validation metric in a testable format. Add the user_stories, requirments, and validation metrics inside the data key in json. Make user_stories, requirments, and validation metrics are arrays of strings following the given format.",
           },
           { role: "user", content: data.text },
         ],
@@ -66,9 +69,12 @@ async function performGeneralSummaryTemplate(data, userID, type) {
           userID,
           response.choices[0].message.content,
           type
-        );
+        ).then((newDocsIds) => {
+          newDocIdArray = newDocsIds;
+        });
       });
   }
+  return newDocIdArray;
   //console.log(completion.choices[0].message.content);
 }
 
@@ -79,12 +85,13 @@ async function saveRawAndProcessedTranscriptions(
   type
 ) {
   const transcription = data.text;
+  let newDocIds = [];
   try {
     var translatedData;
-    if(type === "kanban"){
-        translatedData = JSON.parse(processedData).data;
-    } else { 
-        translatedData = JSON.parse(processedData).summary;
+    if (type === "kanban") {
+      translatedData = JSON.parse(processedData).data;
+    } else {
+      translatedData = JSON.parse(processedData).summary;
     }
 
     const newDocData = {
@@ -100,7 +107,9 @@ async function saveRawAndProcessedTranscriptions(
           userID,
           docRef.id,
           false
-        );
+        ).then((newId) => {
+          newDocIds.push(newId);
+        });
       }
     );
   } catch (error) {
@@ -116,12 +125,17 @@ async function saveRawAndProcessedTranscriptions(
   try {
     await addDoc(collection(db, "transcriptions"), docData).then(
       async (docRef) => {
-        await addNewRawAndProcessedTranscriptionToUser(userID, docRef.id, true);
+        await addNewRawAndProcessedTranscriptionToUser(userID, docRef.id, true)
+          .then((newId) => {
+            newDocIds.push(newId);
+          });
       }
     );
   } catch (error) {
     console.error("Error adding document: ", error);
   }
+
+  return newDocIds;
 }
 
 async function addNewRawAndProcessedTranscriptionToUser(userID, docID, isRaw) {
@@ -135,12 +149,14 @@ async function addNewRawAndProcessedTranscriptionToUser(userID, docID, isRaw) {
         await updateDoc(doc(db, "users", docSnap.id), {
           rawDocsIDs: arrayUnion(docID),
         });
-        console.log("Document updated with rawDocsIDs: ", docID);
+        //console.log("Document updated with rawDocsIDs: ", docID);
+        return docID;
       } else {
         await updateDoc(doc(db, "users", docSnap.id), {
           processedDocsIDs: arrayUnion(docID),
         });
-        console.log("Document updated with processedDocsIDs: ", docID);
+        //console.log("Document updated with processedDocsIDs: ", docID);
+        return docID;
       }
     } else {
       console.log("No such document!");
@@ -154,10 +170,12 @@ async function addNewRawAndProcessedTranscriptionToUser(userID, docID, isRaw) {
 export async function POST(req) {
   const body = await req.json();
   const base64Audio = body.audio;
+  //console.log(base64Audio);
   const userID = body.userid;
   const type = body.type;
   const audio = Buffer.from(base64Audio, "base64");
   const filePath = path.join(process.cwd(), "audio.wav");
+  let docIds = [];
 
   try {
     fs.writeFileSync(filePath, audio);
@@ -168,8 +186,14 @@ export async function POST(req) {
     });
     // Remove the file after use
     fs.unlinkSync(filePath);
-    await performGeneralSummaryTemplate(data, userID, type);
-    return NextResponse.json(data);
+    await performGeneralSummaryTemplate(data, userID, type).then((newDocsIds) => {
+      docIds = newDocsIds;
+    });
+    const response = {
+      text: data.text,
+      docIds: docIds,
+    };
+    return NextResponse.json(response);
   } catch (error) {
     console.error("Error processing audio:", error);
     return NextResponse.error();

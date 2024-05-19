@@ -6,8 +6,6 @@ import { Dropdown, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
-import { Link } from "@nextui-org/react";
-import { update } from "firebase/database";
 import {
 	collection,
 	getDocs,
@@ -15,8 +13,6 @@ import {
 	where,
 	doc,
 	deleteDoc,
-	FieldValue,
-	arrayRemove,
 } from "firebase/firestore";
 
 export default function Archive() {

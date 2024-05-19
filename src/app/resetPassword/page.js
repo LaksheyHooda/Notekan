@@ -1,6 +1,6 @@
 "use client";
 
-import { db, auth } from "@/config/firebase/config";
+import { auth } from "@/config/firebase/config";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@nextui-org/react";

@@ -1,8 +1,8 @@
 "use client";
 
-import { db, auth } from "@/config/firebase/config";
+import { auth } from "@/config/firebase/config";
 import { useEffect, useState } from "react";
-import { Input, Navbar } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Modal from "@/components/failedloginmodal";

@@ -1,13 +1,10 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
 import OpenAI from "openai";
 import { db } from "@/config/firebase/config";
 import {
   addDoc,
-  setDoc,
   collection,
   doc,
-  getDoc,
   query,
   where,
   getDocs,

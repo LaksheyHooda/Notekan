@@ -1,14 +1,11 @@
 "use client";
 
-import Image from "next/image";
-import { db, auth } from "@/config/firebase/config";
-import { addDoc, collection } from "firebase/firestore";
+import { auth } from "@/config/firebase/config";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { Link } from "@nextui-org/react";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 export default function ForgotPassword() {
   const [isModalOpen, setIsModalOpen] = useState(false);

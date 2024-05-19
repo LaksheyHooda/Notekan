@@ -1,18 +1,13 @@
 "use client";
 
 import { db, auth } from "@/config/firebase/config";
-import { addDoc, setDoc, collection } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import {
-  getAuth,
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import Modal from "@/components/failedloginmodal";
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 import { Link } from "@nextui-org/react";
 

@@ -1,13 +1,11 @@
 "use client";
 
 import { db, auth } from "@/config/firebase/config";
-import { Button, Input } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, query, where, getDoc, doc } from "firebase/firestore";
-import { set } from "firebase/database";
+import { getDoc, doc } from "firebase/firestore";
 
 export default function Home() {
     const [dataDoc, setDataDoc] = useState(null);

@@ -1,12 +1,9 @@
 "use client";
 
 import { Button } from "@nextui-org/react";
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "@nextui-org/react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/router";
 import NavBar from "@/components/navBar";
 
 export default function Home() {

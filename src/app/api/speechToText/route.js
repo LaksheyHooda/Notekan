@@ -1,20 +1,17 @@
 import { NextResponse } from "next/server";
-import fs, { cp } from "fs";
+import fs from "fs";
 import OpenAI from "openai";
 import { db } from "@/config/firebase/config";
 import {
   addDoc,
-  setDoc,
   collection,
   doc,
-  getDoc,
   query,
   where,
   getDocs,
   arrayUnion,
   updateDoc,
 } from "firebase/firestore";
-import { patch } from "request";
 import path from "path";
 
 const openai = new OpenAI({

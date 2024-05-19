@@ -12,8 +12,6 @@ import {
   getDocs,
   query,
   where,
-  getDoc,
-  doc,
 } from "firebase/firestore";
 
 export default function Processed() {

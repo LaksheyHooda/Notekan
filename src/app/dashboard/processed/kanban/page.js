@@ -1,21 +1,13 @@
 "use client";
 
 import { db, auth } from "@/config/firebase/config";
-import { Input } from "@nextui-org/react";
-import Link from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
 import {
-  collection,
-  getDocs,
-  query,
-  where,
   getDoc,
   doc,
 } from "firebase/firestore";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { v4 as uuidv4 } from "uuid";
 import IndexDragable from "@/pages/kanbanIndex";
 
 export default function KanBan() {

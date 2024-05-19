@@ -1,6 +1,5 @@
 // pages/api/socket.js
 import { Server } from 'ws';
-import { parse } from 'url';
 import { NextResponse } from 'next/server';
 import OpenAI from "openai";
 

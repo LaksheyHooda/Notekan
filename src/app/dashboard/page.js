@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useRef, use } from "react";
-import { db, auth } from "@/config/firebase/config";
+import { useEffect, useState, useRef } from "react";
+import { auth } from "@/config/firebase/config";
 import 'regenerator-runtime/runtime'
 import { Button } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
@@ -10,10 +10,9 @@ import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Tooltip } from "@nextui-org/react";
-import { set } from "firebase/database";
 import { Spinner } from "@nextui-org/react";
 
 export default function Dashboard() {
